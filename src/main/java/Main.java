@@ -1,16 +1,10 @@
 import com.beust.jcommander.JCommander;
-import com.google.gson.Gson;
 import data.Record;
+import er.rest.HttpRequestClient;
 import er.rest.api.RestParameters;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
 import utils.ERProfile;
 import er.rest.RestServer;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +40,7 @@ public class Main {
 
             er.writeResults(results);
         } else if (para.url != null) {
-            HttpPost httpPost = new HttpPost(URI.create(para.url));
+            HttpRequestClient postClient = new HttpRequestClient();
 
             RestParameters rp = new RestParameters();
             rp.prefix = "datasets/ACM_DBLP";
@@ -60,14 +54,8 @@ public class Main {
             am.put("title", 0.9);
             rp.attributes = am;
 
-            Gson gson = new Gson();
-            StringEntity params = new StringEntity(gson.toJson(rp));
-            httpPost.setEntity(params);
-            httpPost.setHeader("Content-type", "application/json");
-
-            HttpClient httpClient = HttpClientBuilder.create().build();
-            HttpResponse response = httpClient.execute(httpPost);
-            System.out.println(response.getStatusLine().getStatusCode());
+            int code = postClient.post(para.url, rp);
+            System.out.println("HTTP Response code: " + code);
         } else {
             jCommander.usage();
             return;

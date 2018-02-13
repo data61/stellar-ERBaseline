@@ -1,7 +1,6 @@
 package er.rest;
 
 import io.javalin.Javalin;
-import java.io.FileReader;
 
 import er.rest.api.*;
 import utils.ERProfile;

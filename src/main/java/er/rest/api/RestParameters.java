@@ -16,8 +16,8 @@ public class RestParameters {
     public String fileSources;
     public String outputFile;
     public String dataformat;
-    public Map<String, Double> attributes;
-    public List<String> matchers;
+    public Map<String, Double> attributes; // {TitleThreshold=0.9,AuthorThreshold=0.7, ...}
+    public List<String> matchers; // {title, author, ...}
 
     public boolean isValid() {
         if (attributes.size() < 1)
