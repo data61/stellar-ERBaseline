@@ -1,12 +1,9 @@
 package utils;
 
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
 
 public class ERProfile {
 
@@ -17,13 +14,11 @@ public class ERProfile {
         return erProfile;
     }
 
-    private Model model;
+    private Properties properties;
     public ERProfile() {
         try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            model = reader.read(new FileReader("pom.xml"));
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
+            properties = new Properties();
+            properties.load(this.getClass().getClassLoader().getResourceAsStream("pom.properties"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -32,17 +27,17 @@ public class ERProfile {
     }
 
     public String getVersion() {
-        assert model != null;
-        return model.getVersion();
+        assert properties != null;
+        return properties.getProperty("version");
     }
 
     public String getName() {
-        assert model != null;
-        return model.getName();
+        assert properties != null;
+        return properties.getProperty("name");
     }
 
     public String getArtifactId() {
-        assert model != null;
-        return model.getArtifactId();
+        assert properties != null;
+        return properties.getProperty("artifactId");
     }
 }

@@ -3,16 +3,18 @@ Stellar-ERBaseline
 
 *Original source code sourced from SERF framework http://infolab.stanford.edu/serf/*
 
+## Docker Image
+https://hub.docker.com/r/wangzhen263/stellar-erbaseline
+
 
 ## Quickstart
 
-1. To re-compile this package:
+1.To re-compile this package:
 
 ```bash
 mvn package
 ```
-
-2. You can check the `help` command to understand parameters
+2.You can check the `help` command to understand parameters
 
 ```bash
 java -jar "target/Baseline-1.2.1-jar-with-dependencies.jar" --help
@@ -27,14 +29,12 @@ Usage: Stellar ER Baseline(1.2.1) [options]
       To start rest server mode
       Default: false
 ```
-
-3. To run ER in command line mode
+3.To run ER in command line mode
 
 ```bash
 java -jar "target/Baseline-1.2.1-jar-with-dependencies.jar" -c datasets/ACM_DBLP/configcsv.conf
 ```
-
-4. To run ER in REST-HTTP mode
+4.To run ER in REST-HTTP mode
 
 ```bash
 java -jar "target/Baseline-1.2.1-jar-with-dependencies.jar" -r

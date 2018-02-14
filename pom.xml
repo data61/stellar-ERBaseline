@@ -17,7 +17,7 @@
 
     <repositories>
         <repository>
-            <id>Serene</id>
+            <id>Serene-snapshot</id>
             <url>s3://serene-maven-repository/snapshots</url>
         </repository>
     </repositories>
@@ -99,6 +99,13 @@
 
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <extensions>
             <extension>
                 <groupId>org.kuali.maven.wagons</groupId>
@@ -145,11 +152,11 @@
 
     <distributionManagement>
         <repository>
-            <id>releases</id>
+            <id>Serene-release</id>
             <url>s3://serene-maven-repository/releases</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>Serene-snapshot</id>
             <url>s3://serene-maven-repository/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
