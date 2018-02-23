@@ -175,41 +175,11 @@ public class ER {
 			throws IOException {
 
 		String outputFile = properties.getProperty("OutputFile");
-		if (results != null && results.size() > 0 && outputFile != null) {
-			String ext[] = outputFile.split("\\.");
-			DataFileFormat format = DataFileFormat.XML;
-			if (ext.length == 2) {
-				try {
-					format = DataFileFormat.fromString(ext[1]);
-				} catch (IllegalArgumentException e) {
-					System.out.println(e.getCause());
-				}
-			}
+		RestParameters para = new RestParameters();
+		para.outputFile = outputFile;
+		para.prefix = properties.getProperty("Prefix");
 
-			String dir = properties.getProperty("Prefix")+"/"+outputFile;
-			switch (format){
-				case EPGM:
-					System.out.println("write epgm");
-					epgmParser.writeEPGMFromRecords(results, dir);
-					break;
-				case CSV:
-					System.out.println("write csv");
-
-					DBLPACMToCSV write = new DBLPACMToCSV(dir);
-					write.writeRecords(results);
-					break;
-				default:
-					System.out.println("default " + format.toString());
-
-					FileWriter fw = new FileWriter(dir);
-					fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-					XMLifyYahooData.openRecordSet(fw);
-					for (Record r : results)
-						XMLifyYahooData.serializeRecord(r, fw);
-					XMLifyYahooData.closeRecordSet(fw);
-					fw.close();
-			}
-		}
+		this.writeResults(results, para);
 	}
 
 	public void writeResults(Set<Record> results, RestParameters parameters)
@@ -218,7 +188,7 @@ public class ER {
 		String outputFile = parameters.outputFile;
 		if (results != null && results.size() > 0 && outputFile != null) {
 			String ext[] = outputFile.split("\\.");
-			DataFileFormat format = DataFileFormat.XML;
+			DataFileFormat format = DataFileFormat.EPGM;
 			if (ext.length == 2) {
 				try {
 					format = DataFileFormat.fromString(ext[1]);
