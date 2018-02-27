@@ -11,6 +11,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: info.debatty:java-lsh:0.10" level="project" />
+    <orderEntry type="library" name="Maven: info.debatty:java-string-similarity:0.12" level="project" />
+    <orderEntry type="library" name="Maven: info.debatty:java-lsh:0.10" level="project" />
+    <orderEntry type="library" name="Maven: info.debatty:java-string-similarity:0.12" level="project" />
     <orderEntry type="library" name="Maven: com.univocity:univocity-parsers:2.5.9" level="project" />
     <orderEntry type="library" name="Maven: com.wcohen:com.wcohen.secondstring:0.1" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.8" level="project" />

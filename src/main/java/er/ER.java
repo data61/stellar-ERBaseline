@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class ER {
@@ -63,7 +64,17 @@ public class ER {
 				venues.add((String)it.next());
 			});
 
-			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			long mins = 0;
+			long secs = 0;
+			long runTime = 0;
+			long startTime = System.currentTimeMillis();
+//			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, records);
+			runTime = System.currentTimeMillis() - startTime;
+			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
+			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));
+			System.out.println("\t" + mins + " m, " + secs + " s");
+
 			System.out.println("After running RSwoosh, there are " + result.size() + " records.");
 
 			return result;
@@ -86,7 +97,17 @@ public class ER {
 				venues.add((String)it.next());
 			});
 
-			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			long mins = 0;
+			long secs = 0;
+			long runTime = 0;
+			long startTime = System.currentTimeMillis();
+//			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, records);
+			runTime = System.currentTimeMillis() - startTime;
+			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
+			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));
+			System.out.println("\t" + mins + " m, " + secs + " s");
+
 			System.out.println("After running RSwoosh, there are " + result.size() + " records.");
 
 			return result;
