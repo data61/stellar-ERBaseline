@@ -58,11 +58,26 @@ public class ER {
 			Object matcherMerger = mmConstructor.newInstance(properties);
 			System.out.println("Running RSwoosh on " + records.size() + " records.");
 
-			Set<String> venues = new HashSet<>();
-			records.forEach(r -> {
-				Iterator it = r.getAttribute("venue").iterator();
-				venues.add((String)it.next());
-			});
+			// TODO: temp hack of switching between datasets!!!
+			Boolean IsACMDBLP = false;
+			Boolean IsCoraTerror = false;
+			Boolean IsSpammerER = false;
+			if (properties.getProperty("FileSources").toString().toLowerCase().contains("cora")){
+				IsCoraTerror = true;
+			} else if (properties.getProperty("FileSources").toString().toLowerCase().contains("spam")){
+				IsSpammerER = true;
+			} else if (properties.getProperty("FileSources").toString().toLowerCase().contains("dblp")){
+				IsACMDBLP = true;
+			}
+
+			// TODO: temp hack of adding venues
+			if (IsACMDBLP) {
+				Set<String> venues = new HashSet<>();
+				records.forEach(r -> {
+					Iterator it = r.getAttribute("venue").iterator();
+					venues.add((String) it.next());
+				});
+			}
 
 			long mins = 0;
 			long secs = 0;
@@ -91,11 +106,26 @@ public class ER {
 			Object matcherMerger = mmConstructor.newInstance(parameters);
 			System.out.println("Running RSwoosh on " + records.size() + " records.");
 
-			Set<String> venues = new HashSet<>();
-			records.forEach(r -> {
-				Iterator it = r.getAttribute("venue").iterator();
-				venues.add((String)it.next());
-			});
+			// TODO: temp hack of switching between datasets!!!
+			Boolean IsACMDBLP = false;
+			Boolean IsCoraTerror = false;
+			Boolean IsSpammerER = false;
+			if (parameters.fileSources.toLowerCase().contains("cora")){
+				IsCoraTerror = true;
+			} else if (parameters.fileSources.toLowerCase().contains("spam")){
+				IsSpammerER = true;
+			} else if (parameters.fileSources.toLowerCase().contains("dblp")){
+				IsACMDBLP = true;
+			}
+
+			// TODO: temp hack of adding venues
+			if (IsACMDBLP) {
+				Set<String> venues = new HashSet<>();
+				records.forEach(r -> {
+					Iterator it = r.getAttribute("venue").iterator();
+					venues.add((String) it.next());
+				});
+			}
 
 			long mins = 0;
 			long secs = 0;
@@ -179,8 +209,8 @@ public class ER {
 					records.addAll(csvParser.getAllRecords());
 					break;
 				case EPGM:
-
-					epgmParser.recordsFromEPGM(fileSrc);
+					epgmParser.recordsFromEPGMTest(fileSrc);
+//					epgmParser.recordsFromEPGM(fileSrc);
 					records.addAll(epgmParser.getAllRecords());
 					break;
 				default:
@@ -188,7 +218,7 @@ public class ER {
 			}
 		}
 
-		System.out.println("Read records: " + records.size());
+		System.out.println("Got records: " + records.size());
 		return records;
 	}
 

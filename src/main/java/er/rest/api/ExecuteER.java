@@ -76,6 +76,7 @@ public class ExecuteER implements Handler {
 
                 try {
                     Set<Record> records = er.parseRecords(parameters, "data.ReferenceMatcherMerger");
+                    // TODO: Should check if record size == 0 before running the following two lines
                     Set<Record> results = er.runRSwoosh(records, parameters);
                     er.writeResults(results, parameters);
                     ctx.status(200);

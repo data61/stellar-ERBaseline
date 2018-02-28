@@ -23,6 +23,9 @@ public class RSwoosh
 
 		// Step 1: performing blocking
 		if (sb.perform_LSH_blocking(recordsOrig)){
+			if (sb.getBucketSize() <= 0){
+				System.out.println("Bucket is empty. No blocking is performed.");
+			}
 			// Step 2: loop through all blocks
 			for (int j=0; j< sb.getBucketSize(); j++) {
 				Set<Record> bucket = sb.getRecordFromBucket(j);
@@ -33,6 +36,7 @@ public class RSwoosh
 				}
 			}
 		}
+
 		return rmatch;
 	}
 

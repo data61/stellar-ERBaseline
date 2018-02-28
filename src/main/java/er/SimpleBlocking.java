@@ -60,7 +60,7 @@ public class SimpleBlocking {
             for(Map.Entry<String, Attribute> entry: map.entrySet()) {   /* TODO: really need to loop through all keys? */
                 String propKey = entry.getKey();
                 switch (propKey) {
-                    case "title":                                       /* TODO：don't hard code this. */
+                    case "title": case "full_name" : case "name":                                     /* TODO：don't hard code this. */
                         Attribute val = entry.getValue();
                         String attrstr = val.toString();
                         String[] strTokens = attrstr.split(" |\\;");   /* TODO：remove propKey from the String! */
@@ -78,12 +78,14 @@ public class SimpleBlocking {
                         }
 
                         //Debug START -----
+//                        System.out.println("record: \n" + current.toString());
+//
 //                        System.out.println(propKey + " - " + attrstr);
 //                        print(vector);
 //                        System.out.print(" : ");
 //                        print(hash);
 //                        System.out.print("\n");
-
+//
 //                        for(String str : strTokens)
 //                            System.out.print(str + " *** ");
 //                        System.out.print("\n");

@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
 public class ReferenceMatcherMerger extends BasicMatcherMerger implements
         MatcherMerger {
 
+    //TODO: tmp hack. Add new matchers for Cora and Spammer datasets
+    private JaroTFIDFMatcher nameMatcher;
+    private JaroTFIDFMatcher addrMatcher;
+    private JaroTFIDFMatcher sexMatcher;
+    private JaroTFIDFMatcher ageMatcher;
     private JaroTFIDFMatcher stringMatcher;
     private JaroTFIDFMatcher authorMatcher;
     private VenueMatcher venueMatcher;
@@ -39,9 +44,29 @@ public class ReferenceMatcherMerger extends BasicMatcherMerger implements
         String vt = props.getProperty("VenueThreshold");
         float vtf = vt == null ? 0.5F : Float.parseFloat(vt);
 
+        //TODO: tmp hack. Add new thresholds for Cora and Spammer datasets
+        String nt = props.getProperty("NameThreshold");
+        float nf = nt == null ? 0.9F : Float.parseFloat(nt);
+
+        String adt = props.getProperty("AddrThreshold");
+        float adf = adt == null ? 0.5F : Float.parseFloat(adt);
+
+        String st = props.getProperty("SexThreshold");
+        float sf = st == null ? 1.0F : Float.parseFloat(st);
+
+        String at = props.getProperty("AgeGroupThreshold");
+        float af = at == null ? 1.0F : Float.parseFloat(at);
+
+
         keyAttributes = Arrays.asList(props.getProperty("Attributes").split(",")).stream().map(String::trim).collect(Collectors.toList());
 
         format = DataFileFormat.fromString(props.getProperty("Dataformat"));
+
+        //TODO: tmp hack. Add new matchers for Cora and Spammer datasets
+        nameMatcher = new JaroTFIDFMatcher(nf);
+        addrMatcher = new JaroTFIDFMatcher(adf);
+        sexMatcher = new JaroTFIDFMatcher(sf);
+        ageMatcher = new JaroTFIDFMatcher(af);
 
         stringMatcher = new JaroTFIDFMatcher(tf);
         authorMatcher = new JaroTFIDFMatcher(auf);
@@ -54,18 +79,50 @@ public class ReferenceMatcherMerger extends BasicMatcherMerger implements
         _factory = new SimpleRecordFactory();
         gson = new Gson();
 
-        float tf = props.attributes.get("TitleThreshold").floatValue();
-        float auf = props.attributes.get("AuthorThreshold").floatValue();
-        float vtf = props.attributes.get("VenueThreshold").floatValue();
+        // TODO: temp hack of switching between datasets!!!
+        Boolean IsACMDBLP = false;
+        Boolean IsCoraTerror = false;
+        Boolean IsSpammerER = false;
+        if (props.fileSources.toLowerCase().contains("cora")){
+            IsCoraTerror = true;
+        } else if (props.fileSources.toLowerCase().contains("spam")){
+            IsSpammerER = true;
+        } else if (props.fileSources.toLowerCase().contains("dblp")){
+            IsACMDBLP = true;
+        }
+
+        // TODO: temp hack of switching between datasets!!!
+        if (IsCoraTerror){
+            float nf = props.attributes.get("NameThreshold").floatValue();
+            float adf = props.attributes.get("AddrThreshold").floatValue();
+
+            nameMatcher = new JaroTFIDFMatcher(nf);
+            addrMatcher = new JaroTFIDFMatcher(adf);
+
+        } else if (IsSpammerER){
+            float nf = props.attributes.get("NameThreshold").floatValue();
+            float sf = props.attributes.get("SexThreshold").floatValue();
+            float af = props.attributes.get("AgeGroupThreshold").floatValue();
+
+            nameMatcher = new JaroTFIDFMatcher(nf);
+            sexMatcher = new JaroTFIDFMatcher(sf);
+            ageMatcher = new JaroTFIDFMatcher(af);
+
+        } else if (IsACMDBLP){
+            float tf = props.attributes.get("TitleThreshold").floatValue();
+            float auf = props.attributes.get("AuthorThreshold").floatValue();
+            float vtf = props.attributes.get("VenueThreshold").floatValue();
+
+            stringMatcher = new JaroTFIDFMatcher(tf);
+            authorMatcher = new JaroTFIDFMatcher(auf);
+
+            System.out.println("#### vtf " + vtf);
+            venueMatcher = new VenueMatcher(vtf, props.prefix+"/"+"venueDict.csv");
+        }
 
         keyAttributes = props.matchers;
         format = DataFileFormat.fromString(props.dataformat);
 
-        stringMatcher = new JaroTFIDFMatcher(tf);
-        authorMatcher = new JaroTFIDFMatcher(auf);
-
-        System.out.println("#### vtf " + vtf);
-        venueMatcher = new VenueMatcher(vtf, props.prefix+"/"+"venueDict.csv");
         System.out.println("@@@@@@@@@ done");
     }
 
@@ -93,6 +150,30 @@ public class ReferenceMatcherMerger extends BasicMatcherMerger implements
             Attribute a2 = r2.getAttribute(attrKey);
 
             switch (propKey) {
+                case "full_name": case "name":
+                    if (a1 != null && a2 != null) {
+                        if (!ExistentialBooleanComparator.attributesMatch(a1, a2, nameMatcher))
+                            return false;
+                    }
+                    break;
+                case "address":
+                    if (a1 != null && a2 != null) {
+                        if (!ExistentialBooleanComparator.attributesMatch(a1, a2, addrMatcher))
+                            return false;
+                    }
+                    break;
+                case "sex":
+                    if (a1 != null && a2 != null) {
+                        if (!ExistentialBooleanComparator.attributesMatch(a1, a2, sexMatcher))
+                            return false;
+                    }
+                    break;
+                case "ageGroup":
+                    if (a1 != null && a2 != null) {
+                        if (!ExistentialBooleanComparator.attributesMatch(a1, a2, ageMatcher))
+                            return false;
+                    }
+                    break;
                 case "year":
                     Iterator i1 = a1.iterator();
                     Iterator i2 = a2.iterator();
