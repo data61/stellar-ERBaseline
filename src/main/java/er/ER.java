@@ -84,7 +84,10 @@ public class ER {
 			long runTime = 0;
 			long startTime = System.currentTimeMillis();
 //			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
-			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, records);
+			// TODO: temp hack.  This function should be removed?!
+			RestParameters tmpparam = new RestParameters();
+			tmpparam.setPropertiesFromConfigFile(properties);
+			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, tmpparam, records);
 			runTime = System.currentTimeMillis() - startTime;
 			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
 			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));
@@ -132,7 +135,7 @@ public class ER {
 			long runTime = 0;
 			long startTime = System.currentTimeMillis();
 //			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
-			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, records);
+			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, parameters, records);
 			runTime = System.currentTimeMillis() - startTime;
 			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
 			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));

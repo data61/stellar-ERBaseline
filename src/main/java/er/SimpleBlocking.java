@@ -7,6 +7,8 @@ import data.Attribute;
 import data.Record;
 
 import java.lang.String;
+
+import er.rest.api.RestParameters;
 import info.debatty.java.lsh.LSHMinHash;
 import info.debatty.java.lsh.MinHash;
 
@@ -28,24 +30,37 @@ import info.debatty.java.lsh.MinHash;
 public class SimpleBlocking {
 
     // LSH parameters
+    private long initial_seed = -1;
     // Attention: to get relevant results, the number of elements per bucket
     // should be at least 100
-    int buckets = 1000;                                              /* NOTE: Tune this to put entries sparsely into buckets */
+    private int buckets = 3000;                                              /* NOTE: Tune this to put entries sparsely into buckets */
     // Size of vectors
-    int n = 256;                                                    /* NOTE: Tune this to create larger vector. n is the size of the signature (the number of hash functions that are used to produce the signature) */
+    private int n = 256;                                                    /* NOTE: Tune this to create larger vector. n is the size of the signature (the number of hash functions that are used to produce the signature) */
     // MinHash error rate
-    double minhash_error_rate = 0.9;                                /* NOTE: Tune this to enforce higher similarity  */
+    private double minhash_error_rate = 0.9;                                /* NOTE: Tune this to enforce higher similarity  */
     // the number of stages is also sometimes called thge number of bands
-    int stages = 1;                                                 /* TODO: Really simple. Only 1 stage! Instead of 2, or 4, or bla */
+    private int stages = 1;                                                 /* TODO: Really simple. Only 1 stage! Instead of 2, or 4, or bla */
 
     Map<Integer, Set<Record>> recordBuckets = new HashMap();         /* TODO: only cater for 1 stage! 1 set of records per bucket*/
 
-    public SimpleBlocking(){}
+    public SimpleBlocking(RestParameters props){
+        // TODO: check null!!
+        buckets = props.attributes.get("BucketsizeThreshold").intValue();
+        minhash_error_rate = props.attributes.get("SimilarityThreshold").floatValue();
+        initial_seed = props.attributes.get("SeedThreshold").longValue();
+        System.out.println("Set bucket size to " + buckets + " with seed: " + initial_seed + ", similarity threshold: " + minhash_error_rate);
+    }
 
     public boolean perform_LSH_blocking(Set<Record> recordsOrig){
 
         // Create and configure LSH algorithm
-        MinHash minhash = new MinHash(minhash_error_rate, 256);
+        MinHash minhash;
+        if (initial_seed >= 0){
+            minhash = new MinHash(minhash_error_rate, 256, initial_seed);
+        } else {
+            minhash = new MinHash(minhash_error_rate, 256);
+        }
+
         LSHMinHash lsh = new LSHMinHash(stages, buckets, n);
 
         // Count number of record assign to each bucket at each stage

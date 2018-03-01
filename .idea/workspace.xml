@@ -7,19 +7,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="747ece60-aa77-4cad-b34f-a003de04e12c" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/Cora_Terror/param.json" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/ERBaseline.iml" afterPath="$PROJECT_DIR$/ERBaseline.iml" />
       <change beforePath="$PROJECT_DIR$/datasets/ACM_DBLP/output.epgm/edges.json" afterPath="$PROJECT_DIR$/datasets/ACM_DBLP/output.epgm/edges.json" />
       <change beforePath="$PROJECT_DIR$/datasets/ACM_DBLP/output.epgm/graphs.json" afterPath="$PROJECT_DIR$/datasets/ACM_DBLP/output.epgm/graphs.json" />
       <change beforePath="$PROJECT_DIR$/datasets/ACM_DBLP/output.epgm/vertices.json" afterPath="$PROJECT_DIR$/datasets/ACM_DBLP/output.epgm/vertices.json" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/ReferenceMatcherMerger.java" afterPath="$PROJECT_DIR$/src/main/java/data/ReferenceMatcherMerger.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/storage/impl/EPGMRecordHandler.java" afterPath="$PROJECT_DIR$/src/main/java/data/storage/impl/EPGMRecordHandler.java" />
+      <change beforePath="$PROJECT_DIR$/datasets/ACM_DBLP/param.json" afterPath="$PROJECT_DIR$/datasets/ACM_DBLP/param.json" />
+      <change beforePath="$PROJECT_DIR$/datasets/Cora_Terror/param.json" afterPath="$PROJECT_DIR$/datasets/Cora_Terror/param.json" />
+      <change beforePath="$PROJECT_DIR$/datasets/Spammer_ER/param.json" afterPath="$PROJECT_DIR$/datasets/Spammer_ER/param.json" />
       <change beforePath="$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java" afterPath="$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/er/ER.java" afterPath="$PROJECT_DIR$/src/main/java/er/ER.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/er/SimpleBlocking.java" afterPath="$PROJECT_DIR$/src/main/java/er/SimpleBlocking.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/er/rest/api/ExecuteER.java" afterPath="$PROJECT_DIR$/src/main/java/er/rest/api/ExecuteER.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -38,43 +35,18 @@
       <file leaf-file-name="ER.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/er/ER.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2834">
-              <caret line="211" column="45" lean-forward="false" selection-start-line="211" selection-start-column="45" selection-end-line="211" selection-end-column="45" />
+            <state relative-caret-position="270">
+              <caret line="40" column="32" lean-forward="false" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RSwoosh.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java">
+      <file leaf-file-name="RestParameters.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/er/rest/api/RestParameters.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="29" column="42" lean-forward="false" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
-              <folding>
-                <element signature="e#348#356#0" expanded="true" />
-                <element signature="e#405#413#0" expanded="true" />
-                <element signature="e#1286#1294#0" expanded="true" />
-                <element signature="e#1343#1351#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleBlocking.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/er/SimpleBlocking.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="81" column="2" lean-forward="false" selection-start-line="81" selection-start-column="2" selection-end-line="81" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ExecuteER.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/er/rest/api/ExecuteER.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+            <state relative-caret-position="445">
+              <caret line="40" column="16" lean-forward="false" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -83,11 +55,67 @@
       <file leaf-file-name="ReferenceMatcherMerger.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/data/ReferenceMatcherMerger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="31" column="51" lean-forward="false" selection-start-line="31" selection-start-column="51" selection-end-line="31" selection-end-column="51" />
+            <state relative-caret-position="316">
+              <caret line="57" column="55" lean-forward="false" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="60" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RSwoosh.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="12" column="90" lean-forward="false" selection-start-line="12" selection-start-column="90" selection-end-line="12" selection-end-column="90" />
               <folding>
-                <element signature="e#5011#5012#0" expanded="true" />
-                <element signature="e#5037#5038#0" expanded="true" />
+                <element signature="e#329#337#0" expanded="true" />
+                <element signature="e#386#394#0" expanded="true" />
+                <element signature="e#1272#1280#0" expanded="true" />
+                <element signature="e#1329#1337#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="param.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasets/ACM_DBLP/param.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="param.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasets/Cora_Terror/param.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="202" lean-forward="false" selection-start-line="0" selection-start-column="202" selection-end-line="0" selection-end-column="202" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="param.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasets/Spammer_ER/param.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="247" lean-forward="false" selection-start-line="0" selection-start-column="243" selection-end-line="0" selection-end-column="247" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SimpleBlocking.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/er/SimpleBlocking.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="368">
+              <caret line="60" column="12" lean-forward="false" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="12" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#8576#8577#0" expanded="true" />
+                <element signature="e#8606#8607#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -188,17 +216,17 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/Parameters.java" />
         <option value="$PROJECT_DIR$/README" />
-        <option value="$PROJECT_DIR$/datasets/ACM_DBLP/param.json" />
         <option value="$PROJECT_DIR$/datasets/ACM_DBLP/param_dockerimage.json" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/java/data/storage/impl/EPGMRecordHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/data/ReferenceMatcherMerger.java" />
+        <option value="$PROJECT_DIR$/src/main/java/er/rest/api/ExecuteER.java" />
+        <option value="$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java" />
+        <option value="$PROJECT_DIR$/src/main/java/er/ER.java" />
         <option value="$PROJECT_DIR$/datasets/Cora_Terror/param.json" />
         <option value="$PROJECT_DIR$/datasets/Spammer_ER/param.json" />
-        <option value="$PROJECT_DIR$/src/main/java/data/storage/impl/EPGMRecordHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/er/ER.java" />
-        <option value="$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java" />
-        <option value="$PROJECT_DIR$/src/main/java/data/ReferenceMatcherMerger.java" />
         <option value="$PROJECT_DIR$/src/main/java/er/SimpleBlocking.java" />
-        <option value="$PROJECT_DIR$/src/main/java/er/rest/api/ExecuteER.java" />
+        <option value="$PROJECT_DIR$/datasets/ACM_DBLP/param.json" />
       </list>
     </option>
   </component>
@@ -283,6 +311,90 @@
             <path>
               <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
               <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="ACM_DBLP" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="Cora_Terror" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="Spammer_ER" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="er" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="er" type="462c0819:PsiDirectoryNode" />
+              <item name="rest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="er" type="462c0819:PsiDirectoryNode" />
+              <item name="rest" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="stellar-ERBaseline" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stellar-ERBaseline" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -469,7 +581,21 @@
       <option name="project" value="LOCAL" />
       <updated>1519860285546</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Enabled entity resolution for Cora Terror and Spammer ER datasets (with simple blocking)">
+      <created>1519860428539</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1519860428539</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Enabled entity resolution for Cora Terror and Spammer ER datasets (with simple blocking)">
+      <created>1519875047625</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1519875047625</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -490,15 +616,16 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.56179774" sideWeight="0.6230329" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5599631" sideWeight="0.39243877" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19791667" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23960216" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5599631" sideWeight="0.3769671" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5599631" sideWeight="0.60756123" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286517" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21938232" sideWeight="0.49638337" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32933578" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32841328" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="SBT Execute" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -513,7 +640,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.53932583" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -628,13 +754,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rest/api/ExecuteER.java" />
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home/src.zip!/java/lang/String.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ERProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="12" column="38" lean-forward="false" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rest/RestServer.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/ER.java" />
     <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
@@ -692,6 +811,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -718,14 +838,6 @@
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/er/rest/api/RestParameters.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="794">
-          <caret line="56" column="49" lean-forward="false" selection-start-line="56" selection-start-column="49" selection-end-line="56" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -769,34 +881,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/datasets/Spammer_ER/param.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="180" lean-forward="false" selection-start-line="0" selection-start-column="172" selection-end-line="0" selection-end-column="180" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home/src.zip!/java/util/Properties.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
           <caret line="121" column="6" lean-forward="false" selection-start-line="121" selection-start-column="6" selection-end-line="121" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datasets/Cora_Terror/param.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="145" lean-forward="false" selection-start-line="0" selection-start-column="145" selection-end-line="0" selection-end-column="145" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datasets/ACM_DBLP/param.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -841,19 +929,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="29" column="42" lean-forward="false" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
-          <folding>
-            <element signature="e#348#356#0" expanded="true" />
-            <element signature="e#405#413#0" expanded="true" />
-            <element signature="e#1286#1294#0" expanded="true" />
-            <element signature="e#1343#1351#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/data/Record.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
@@ -862,38 +937,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/data/ReferenceMatcherMerger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="31" column="51" lean-forward="false" selection-start-line="31" selection-start-column="51" selection-end-line="31" selection-end-column="51" />
-          <folding>
-            <element signature="e#5011#5012#0" expanded="true" />
-            <element signature="e#5037#5038#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/er/ER.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2834">
-          <caret line="211" column="45" lean-forward="false" selection-start-line="211" selection-start-column="45" selection-end-line="211" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/er/SimpleBlocking.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ERProfile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="81" column="2" lean-forward="false" selection-start-line="81" selection-start-column="2" selection-end-line="81" selection-end-column="2" />
+          <caret line="12" column="38" lean-forward="false" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/er/rest/api/ExecuteER.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+        <state relative-caret-position="912">
+          <caret line="79" column="51" lean-forward="true" selection-start-line="79" selection-start-column="51" selection-end-line="79" selection-end-column="51" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/deduplication/RSwoosh.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="12" column="90" lean-forward="false" selection-start-line="12" selection-start-column="90" selection-end-line="12" selection-end-column="90" />
+          <folding>
+            <element signature="e#329#337#0" expanded="true" />
+            <element signature="e#386#394#0" expanded="true" />
+            <element signature="e#1272#1280#0" expanded="true" />
+            <element signature="e#1329#1337#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/data/ReferenceMatcherMerger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="57" column="55" lean-forward="false" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/er/rest/api/RestParameters.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="40" column="16" lean-forward="false" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/er/ER.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="40" column="32" lean-forward="false" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/Spammer_ER/param.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="247" lean-forward="false" selection-start-line="0" selection-start-column="243" selection-end-line="0" selection-end-column="247" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/Cora_Terror/param.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="202" lean-forward="false" selection-start-line="0" selection-start-column="202" selection-end-line="0" selection-end-column="202" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/ACM_DBLP/param.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/er/SimpleBlocking.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="60" column="12" lean-forward="false" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8576#8577#0" expanded="true" />
+            <element signature="e#8606#8607#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

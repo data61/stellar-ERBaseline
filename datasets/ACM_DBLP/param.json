@@ -1,1 +1,1 @@
-{"prefix":"datasets/ACM_DBLP", "dataformat":"epgm", "fileSources":"er_acm_dblp2.epgm", "outputFile":"output.epgm", "attributes":{"venue":0.5, "author":0.7, "title":0.9}, "sessionId":"44c8a9d8-0161-1000-5d6c-8623d70e48a5","resultUrl":"https://requestb.in/1jveop11"}
+{"prefix":"datasets/ACM_DBLP", "dataformat":"epgm", "fileSources":"er_acm_dblp2.epgm", "outputFile":"output.epgm", "attributes":{"venue":0.5, "author":0.7, "title":0.9, "bucketsize":1000, "similarity":0.9, "seed":1234}, "sessionId":"44c8a9d8-0161-1000-5d6c-8623d70e48a5","resultUrl":"https://requestb.in/1jveop11"}

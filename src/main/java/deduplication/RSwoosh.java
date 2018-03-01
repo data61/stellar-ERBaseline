@@ -1,25 +1,23 @@
 package deduplication;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import data.MatcherMerger;
 import data.Record;
 
 import er.SimpleBlocking;
+import er.rest.api.RestParameters;
 
 public class RSwoosh
 {
-	public static Set<Record> execute_with_blocking(MatcherMerger mm, Set<Record> recordsOrig){
+	public static Set<Record> execute_with_blocking(MatcherMerger mm, RestParameters props, Set<Record> recordsOrig){
 
 		Set<Record> records = new HashSet<Record>(recordsOrig);
 		Set<Record> rmatch = new HashSet<Record>();
 		Map<Integer, Set<Record>> recordSetInBuckets = new HashMap();
 
 		// Initialize simple blocking
-		SimpleBlocking sb = new SimpleBlocking();
+		SimpleBlocking sb = new SimpleBlocking(props);
 
 		// Step 1: performing blocking
 		if (sb.perform_LSH_blocking(recordsOrig)){
