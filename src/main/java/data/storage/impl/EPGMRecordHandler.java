@@ -47,8 +47,21 @@ public class EPGMRecordHandler implements DataSource {
         return records.iterator();
     }
 
-    public void recordsFromEPGM(String dir)
+
+    public void recordsFromEPGMTest(String dir)
             throws IOException {
+
+        // TODO: temp hack of switching between datasets!!!
+        Boolean IsACMDBLP = false;
+        Boolean IsCoraTerror = false;
+        Boolean IsSpammerER = false;
+        if (dir.toLowerCase().contains("cora")){
+            IsCoraTerror = true;
+        } else if (dir.toLowerCase().contains("spam")){
+            IsSpammerER = true;
+        } else if (dir.toLowerCase().contains("dblp")){
+            IsACMDBLP = true;
+        }
 
         System.out.println("Parsing EPGM: " + dir);
         graphCollection =
@@ -64,23 +77,33 @@ public class EPGMRecordHandler implements DataSource {
         labels.forEach(label -> rootMap.put(label, 0));
 
         edges.forEach(e -> {
-                vertexes.stream().filter(v -> e.getSrc().equals(v.getId()))
-                    .forEach(v -> rootMap.put(v.getLabel(), rootMap.get(v.getLabel()) + 1));
-            }
+                    vertexes.stream().filter(v -> e.getSrc().equals(v.getId()))
+                            .forEach(v -> rootMap.put(v.getLabel(), rootMap.get(v.getLabel()) + 1));
+                }
         );
 
-        List list = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList());
+        // TODO: temp hack. For DBLP datasets, edges do not contain Paper, and we want to extract Paper nodes, that is why filter r.getValue() == 0, vice versa for Cora and Spammer
+        List list;
+        if (IsCoraTerror || IsSpammerER){
+            list = rootMap.entrySet().stream().filter(r -> r.getValue() != 0).collect(Collectors.toList());
+        } else {
+            list = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList());
+        }
+
         System.out.println(rootMap.toString());
         System.out.println(list.toString());
 
-        String rootSubgraph = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList()).get(0).getKey();
+        // TODO: temp hack.
+        String rootSubgraph;
+        if (IsCoraTerror || IsSpammerER){
+            rootSubgraph = rootMap.entrySet().stream().filter(r -> r.getValue() != 0).collect(Collectors.toList()).get(0).getKey();
+        } else {
+            rootSubgraph = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList()).get(0).getKey();
+        }
 
         System.out.println("Reading EPGM on sub-root: " + rootSubgraph);
-        // Loop through the sub-graphs
 
-        List<Vertex> papers = vertexes.stream().filter(v->v.getLabel().equals(rootSubgraph)).collect(Collectors.toList());
-        System.out.println(papers.size());
-
+        // Loop through the sub-graphs - Loop through each nodes in vertices.json, and if they have same label as in rootSubgraph!
         vertexes.stream().filter(vertex -> vertex.getLabel().equals(rootSubgraph)).collect(Collectors.toList())
                 .forEach(vertex -> {
                     Set<Attribute> attrSet = new HashSet<>();

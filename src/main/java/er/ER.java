@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class ER {
@@ -57,13 +58,41 @@ public class ER {
 			Object matcherMerger = mmConstructor.newInstance(properties);
 			System.out.println("Running RSwoosh on " + records.size() + " records.");
 
-			Set<String> venues = new HashSet<>();
-			records.forEach(r -> {
-				Iterator it = r.getAttribute("venue").iterator();
-				venues.add((String)it.next());
-			});
+			// TODO: temp hack of switching between datasets!!!
+			Boolean IsACMDBLP = false;
+			Boolean IsCoraTerror = false;
+			Boolean IsSpammerER = false;
+			if (properties.getProperty("FileSources").toString().toLowerCase().contains("cora")){
+				IsCoraTerror = true;
+			} else if (properties.getProperty("FileSources").toString().toLowerCase().contains("spam")){
+				IsSpammerER = true;
+			} else if (properties.getProperty("FileSources").toString().toLowerCase().contains("dblp")){
+				IsACMDBLP = true;
+			}
 
-			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			// TODO: temp hack of adding venues
+			if (IsACMDBLP) {
+				Set<String> venues = new HashSet<>();
+				records.forEach(r -> {
+					Iterator it = r.getAttribute("venue").iterator();
+					venues.add((String) it.next());
+				});
+			}
+
+			long mins = 0;
+			long secs = 0;
+			long runTime = 0;
+			long startTime = System.currentTimeMillis();
+//			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			// TODO: temp hack.  This function should be removed?!
+			RestParameters tmpparam = new RestParameters();
+			tmpparam.setPropertiesFromConfigFile(properties);
+			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, tmpparam, records);
+			runTime = System.currentTimeMillis() - startTime;
+			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
+			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));
+			System.out.println("\t" + mins + " m, " + secs + " s");
+
 			System.out.println("After running RSwoosh, there are " + result.size() + " records.");
 
 			return result;
@@ -80,13 +109,38 @@ public class ER {
 			Object matcherMerger = mmConstructor.newInstance(parameters);
 			System.out.println("Running RSwoosh on " + records.size() + " records.");
 
-			Set<String> venues = new HashSet<>();
-			records.forEach(r -> {
-				Iterator it = r.getAttribute("venue").iterator();
-				venues.add((String)it.next());
-			});
+			// TODO: temp hack of switching between datasets!!!
+			Boolean IsACMDBLP = false;
+			Boolean IsCoraTerror = false;
+			Boolean IsSpammerER = false;
+			if (parameters.fileSources.toLowerCase().contains("cora")){
+				IsCoraTerror = true;
+			} else if (parameters.fileSources.toLowerCase().contains("spam")){
+				IsSpammerER = true;
+			} else if (parameters.fileSources.toLowerCase().contains("dblp")){
+				IsACMDBLP = true;
+			}
 
-			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			// TODO: temp hack of adding venues
+			if (IsACMDBLP) {
+				Set<String> venues = new HashSet<>();
+				records.forEach(r -> {
+					Iterator it = r.getAttribute("venue").iterator();
+					venues.add((String) it.next());
+				});
+			}
+
+			long mins = 0;
+			long secs = 0;
+			long runTime = 0;
+			long startTime = System.currentTimeMillis();
+//			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, parameters, records);
+			runTime = System.currentTimeMillis() - startTime;
+			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
+			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));
+			System.out.println("\t" + mins + " m, " + secs + " s");
+
 			System.out.println("After running RSwoosh, there are " + result.size() + " records.");
 
 			return result;
@@ -158,8 +212,8 @@ public class ER {
 					records.addAll(csvParser.getAllRecords());
 					break;
 				case EPGM:
-
-					epgmParser.recordsFromEPGM(fileSrc);
+					epgmParser.recordsFromEPGMTest(fileSrc);
+//					epgmParser.recordsFromEPGM(fileSrc);
 					records.addAll(epgmParser.getAllRecords());
 					break;
 				default:
@@ -167,7 +221,7 @@ public class ER {
 			}
 		}
 
-		System.out.println("Read records: " + records.size());
+		System.out.println("Got records: " + records.size());
 		return records;
 	}
 
