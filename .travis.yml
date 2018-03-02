@@ -1,8 +1,7 @@
 language: java
 env:
   global:
-  - ER_VERSION: $(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}'
-      --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+  - ER_VERSION: $(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
   - secure: D2M7ChZlORG1Xi0gV8ogVkipSx8eqvsrQY1NEDvKE2Dtp5jC8wNL7iD0ui+9o7IokearZmNZhA7LGwEQs0tcwbKsbPxhzLTKJrDanMhcDeHdqGgXMHn4BYLvizHuQfCPXN73bob4pNxs6cXRQz8Oi19nGyrjYLZnYe5Iv9Y+hA6Hy3tM549QYtJj0C3tzjHKtWi5GJ/FTw2EEtrFDnsYVMGFbPFoJpDuZqHbsD5jsU2igOxhjjGa7uVpsIstR/99ftogdFqXgs/Z4iyuDNA8MwXlEk7gVYzEH9q20nVgc4RKUJ0ZpRnKr0S3a73VBRWb+9EYaeR6Q+Jo4CSEGxfwZjkNkQCR4Tz1667Pd12k3tMF6XGoywsIBolrOisLPq+yhez9eTerb2zBGMRF0hmvhi0z5pb13bmlGK95+/kT2dlWq0VcvlSuVECDUbTGdl49JaXklLsDOuCsGmhQIHa2La5EnjURyxdoxlTzFBTgPKr3IT2miT+iLSxBqRH6kf24RkXy3sa4DC/WpTzmnNKe1KpOLFUfuFX3wvVUglisKWO453n+Z92wdEXjk39rWPSYw+Tl8yKoQ/SaCKSwM/Bgqb/Gq+OnwDcT3M/CSICw7IdQIuiKIjQfji0EXBeyHA45qHqIm+1Jo2UXliNvQvdLKg/tqLjf/NE3veD3r7hm7Ks=
   - secure: MY/9g1aD8P0RyaBWoCjFVUZbmPbKuH0NxJQwDEclMJao8ovyQDlBmsn1BrpCHYR1KywDn4dI2QFDzTxxyY2TAbEoiAHJYvL0CTQd9LjxPd3x2j5wrS58kEunnhrqTjSI7MVxBOTcqLP7xwHrT0cyD/MwtvvIGu4Zc5OPH0SsSHZSasCjnAwc5jUbLnpogTTCWhdXB745NCODBTeN/Nd9ynaNZMcLTNxrWNZjglMfS+N5fZIS6iu1TZf6WklwtC7HB7+FhIDuHnJv8GQ90HhlO74z4fd7GWw4FjEGh/+2djwy8fEw8LSLJFx7jg6ky3dnuiJBpbuhq3B0Y34IytXA9Crf65prAgmHeggOyOmRQwdlUTs6HovBBRkheI+DDjLXjI5rGDot4DhTDg1kosHymu+sa/cZzPjXFwxbabKqi3l625ol5wj7GBoeYEK1vJVo7VkJBpxYQv0WGen21Mzzl1Lbtoxv5DUVAVsRJqAg62MPCZvZJDunJPU5Az2AZMiwkEm5S8qvC9RG5Cl7+FuT4mpOXdAtT3bdV1e310sJUcSVlduiDcnsTf96rk0F84Kb983OkhymwOEUApJvn3kfZGOXxoFSoSqczFqC/zI5bKTI0rSBMZPepfnAyMES/eCPLARuRIMNDzplqjyWA39SDN8PY6dDXHrYLPbHo88TdTQ=
 jobs:
@@ -14,12 +13,24 @@ jobs:
     if: branch = devel OR branch =~ ^develmock/
     script:
     - echo "Attempting to publish development version [$ER_VERSION]";
-    - if [[ $ER_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT$ ]] ; then echo "Publishing
-      development version $ER_VERSION"; mvn deploy; else echo "CONFLICT publishing
-      development version [$ER_VERSION]"; exit 1; fi
+    - if [[ $ER_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT$ ]] ; then
+        echo "Publishing development version $ER_VERSION";
+        mvn deploy;
+        echo "Publishing snapshot docker image";
+        ./docker/dockerize.sh;
+      else
+        echo "CONFLICT publishing development version [$ER_VERSION]";
+        exit 1;
+      fi
   - stage: release
     if: branch = master OR branch =~ ^mastermock/
     script:
-    - if [[ $ER_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then echo "Releasing version
-      [$ER_VERSION]"; mvn deploy; else echo "CONFLICT releasing version [$ER_VERSION]";
-      exit 1; fi
+    - if [[ $ER_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
+        echo "Releasing version [$ER_VERSION]";
+        mvn deploy;
+        echo "Publishing release docker image";
+        ./docker/dockerize.sh;
+      else
+        echo "CONFLICT releasing version [$ER_VERSION]";
+        exit 1;
+      fi
