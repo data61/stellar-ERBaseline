@@ -1,5 +1,9 @@
 Stellar-ERBaseline
 ====================
+|Branch|Build|Coverage|
+|:-----|:----:|:----:|
+|*master*|[![Build Status](https://travis-ci.org/data61/stellar-ERBaseline.svg?branch=master)](https://travis-ci.org/data61/stellar-ERBaseline)|[![Coverage Status](https://coveralls.io/repos/github/data61/stellar-ERBaseline/badge.svg?branch=master)](https://coveralls.io/github/data61/stellar-ERBaseline?branch=master)|
+|*devel*|[![Build Status](https://travis-ci.org/data61/stellar-ERBaseline.svg?branch=devel)](https://travis-ci.org/data61/stellar-ERBaseline)|[![Coverage Status](https://coveralls.io/repos/github/data61/stellar-ERBaseline/badge.svg?branch=devel)](https://coveralls.io/github/data61/stellar-ERBaseline?branch=devel)|
 
 *Original source code sourced from SERF framework http://infolab.stanford.edu/serf/*
 
