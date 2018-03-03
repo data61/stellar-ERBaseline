@@ -1,0 +1,9 @@
+{
+    "prefix":"datasets/ACM_DBLP",
+    "outputFile":"output.epgm",
+    "dataFormat":"epgm",
+    "matcherMerger":"data.ReferenceMatcherMerger",
+    "fileSources":["ACM.csv","DBLP2.csv"],
+    "attributes":{"year":1.0,"venue":0.5, "author":0.7, "title":0.9},
+    "options":{"VenueDict":"venueDict.csv"}
+}

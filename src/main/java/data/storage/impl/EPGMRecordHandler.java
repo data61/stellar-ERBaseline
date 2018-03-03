@@ -60,28 +60,35 @@ public class EPGMRecordHandler implements DataSource {
         List<Edge> edges = graph.getEdges().asList();
 
         Set<String> labels = vertexes.stream().map(vertex -> vertex.getLabel()).collect(Collectors.toSet());
-        HashMap<String, Integer> rootMap = new HashMap<>();
-        labels.forEach(label -> rootMap.put(label, 0));
+        String rootSubgraph = labels.iterator().next();
 
-        edges.forEach(e -> {
-                vertexes.stream().filter(v -> e.getSrc().equals(v.getId()))
-                    .forEach(v -> rootMap.put(v.getLabel(), rootMap.get(v.getLabel()) + 1));
-            }
-        );
+        if (labels.size() > 1) {
+            HashMap<String, Integer> rootMap = new HashMap<>();
+            labels.forEach(label -> rootMap.put(label, 0));
 
-        List list = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList());
-        System.out.println(rootMap.toString());
-        System.out.println(list.toString());
+            edges.forEach(e -> {
+                        vertexes.stream().filter(v -> e.getSrc().equals(v.getId()))
+                                .forEach(v -> rootMap.put(v.getLabel(), rootMap.get(v.getLabel()) + 1));
+                    }
+            );
 
-        String rootSubgraph = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList()).get(0).getKey();
+            List list = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList());
+            System.out.println(rootMap.toString());
+            System.out.println(list.toString());
+
+            rootSubgraph = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList()).get(0).getKey();
+        }
 
         System.out.println("Reading EPGM on sub-root: " + rootSubgraph);
         // Loop through the sub-graphs
 
-        List<Vertex> papers = vertexes.stream().filter(v->v.getLabel().equals(rootSubgraph)).collect(Collectors.toList());
+        //Variable in lambda should be final
+        String final_rootSubgraph = rootSubgraph;
+
+        List<Vertex> papers = vertexes.stream().filter(v->v.getLabel().equals(final_rootSubgraph)).collect(Collectors.toList());
         System.out.println(papers.size());
 
-        vertexes.stream().filter(vertex -> vertex.getLabel().equals(rootSubgraph)).collect(Collectors.toList())
+        vertexes.stream().filter(vertex -> vertex.getLabel().equals(final_rootSubgraph)).collect(Collectors.toList())
                 .forEach(vertex -> {
                     Set<Attribute> attrSet = new HashSet<>();
                     attrSet.add(new Attribute("id", vertex.getId().toString()));

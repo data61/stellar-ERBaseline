@@ -17,12 +17,13 @@ import org.junit.After;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import er.rest.RestServer;
 import utils.ERProfile;
-import er.rest.api.RestParameters;
+import utils.JSONConfig;
 
 public class TestPostExecuteER {
 	public RestServer server;
@@ -52,17 +53,11 @@ public class TestPostExecuteER {
 	public void testWrongParameters() throws UnsupportedEncodingException, IOException {
 		HttpPost httpPost = new HttpPost(URI.create("http://127.0.0.1:7000/deduplicate"));
 
-		RestParameters rp = new RestParameters();
+		JSONConfig rp = new JSONConfig();
 		rp.prefix = "datasets/ACM_DBLP";
-		rp.dataformat = "epgm";
-		rp.fileSources = "er_acm_dblp2.epgm";
+		rp.dataFormat = "epgm";
+		rp.fileSources = Arrays.asList(new String[]{"er_acm_dblp2.epgm"});
 		rp.outputFile = "output.epgm";
-
-//		Map<String, Double> am = new HashMap<>();
-//		am.put("year", 1.0);
-//		am.put("venue", 0.5);
-//		am.put("author", 0.7);
-//		am.put("title", 0.9);
 		rp.attributes = new HashMap<>();
 
 		Gson gson = new Gson();

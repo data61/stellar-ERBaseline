@@ -1,44 +1,44 @@
 package er.rest.api;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import data.Record;
+import data.ReferenceMatcherMerger;
 import er.ER;
 import er.rest.HttpRequestClient;
 import io.javalin.Context;
 import io.javalin.HaltException;
 import io.javalin.Handler;
-import org.apache.commons.lang.StringUtils;
+import utils.JSONConfig;
 
 import javax.servlet.AsyncContext;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class ExecuteER implements Handler {
+
     private class Transaction {
         public String sessionId;
         public String resultUrl;
         public String prefix;
-        public String fileSources;
+        public List<String> fileSources;
         public String outputFile;
-        public String dataformat;
+        public String dataFormat;
+        public String matcherMerger;
         public Map<String, Double> attributes;
-        public List<String> matchers;
+        public Map<String, String> options;
 
-        public RestParameters createRestParameter(){
-            RestParameters rp = new RestParameters();
+        public JSONConfig createJSONConfig(){
+            JSONConfig rp = new JSONConfig();
             rp.prefix = prefix;
             rp.fileSources = fileSources;
             rp.outputFile = outputFile;
-            rp.dataformat = dataformat;
-
-            Map<String, Double> attres = attributes;
-            rp.matchers = new ArrayList<>(attres.keySet());
-            rp.attributes = new HashMap<>();
-            attres.forEach((k,v) -> {
-                String newkey = StringUtils.capitalize(k) + "Threshold";
-                rp.attributes.put(newkey, v);
-            });
-
+            rp.dataFormat = dataFormat;
+            rp.attributes = attributes;
+            rp.matcherMerger = matcherMerger;
+            rp.options = options;
             return rp;
         }
     }
@@ -61,11 +61,13 @@ public class ExecuteER implements Handler {
         asyncContext.setTimeout(0);
 
         String body = ctx.body();
+        System.out.println(body);
 
         Transaction transaction = gson.fromJson(body, Transaction.class);
         if (transaction == null) throw new HaltException(400, "Wrong transaction parameters");
 
-        RestParameters parameters = transaction.createRestParameter();
+        JSONConfig parameters = transaction.createJSONConfig();
+
         if (!parameters.isValid())
             throw new HaltException(400, "Wrong REST parameters");
 
@@ -75,15 +77,15 @@ public class ExecuteER implements Handler {
                 Map<String,String> obj = new HashMap<>();
 
                 try {
-                    Set<Record> records = er.parseRecords(parameters, "data.ReferenceMatcherMerger");
+                    Set<Record> records = er.parseRecords(parameters);
                     Set<Record> results = er.runRSwoosh(records, parameters);
                     er.writeResults(results, parameters);
                     ctx.status(200);
 
-                    obj.put("sessionId", transaction.sessionId);
+                    if (id != null) obj.put("sessionId", transaction.sessionId);
                     obj.put("result", "success");
                 } catch (Exception e) {
-                    obj.put("sessionId", transaction.sessionId);
+                    if (id != null) obj.put("sessionId", transaction.sessionId);
                     obj.put("error", e.toString());
                     e.printStackTrace();
                 }
@@ -92,7 +94,7 @@ public class ExecuteER implements Handler {
                 tasks.remove(id);
 
                 try {
-                    httpClient.post(transaction.resultUrl, obj);
+                    if (transaction.resultUrl != null) httpClient.post(transaction.resultUrl, obj);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
