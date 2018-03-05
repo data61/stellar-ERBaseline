@@ -5,13 +5,13 @@
   <Servers>
     <Server>
       <id>Serene-release</id>
-      <username>${MAVEN_USERNAME}</username>
-      <password>${MAVEN_PASSWORD}</password>
+      <username>${env.MAVEN_USERNAME}</username>
+      <password>${env.MAVEN_PASSWORD}</password>
     </Server>
     <server>
     <id>Serene-snapshot</id>
-    <username>${MAVEN_USERNAME}</username>
-    <password>${MAVEN_PASSWORD}</password>
+    <username>${env.MAVEN_USERNAME}</username>
+    <password>${env.MAVEN_PASSWORD}</password>
     </server>
   </Servers>
 </Settings>
