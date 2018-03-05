@@ -6,8 +6,8 @@
   ],
   "outputFile": "output.epgm",
   "attributes": {
-    "sex": 1.0,
-    "ageGroup": 1.0,
+    "sex": 0.9,
+    "ageGroup": 0.9,
     "name": 0.9
   },
   "sessionId": "44c8a9d8-0161-1000-5d6c-8623d70e48a5",

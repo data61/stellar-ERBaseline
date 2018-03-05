@@ -1,0 +1,32 @@
+sudo: required
+
+language: java
+
+jdk: oraclejdk8
+env:
+  global:
+    - ER_VERSION: $(mvn -q \
+                         -Dexec.executable="echo" \
+                         -Dexec.args='${project.version}' \
+                         --non-recursive \
+                         org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+
+
+
+jobs:
+  include:
+    - stage: test
+      script:
+        - bash configure-maven.sh
+        - mvn -B verify
+    - stage: staging
+      if: branch = master
+      script:
+        - mvn package
+        - echo "Creating stage docker for ERBaseline version [$ER_VERSION]"
+        - docker build -f docker/Dockerfile -t stellar-erbaseline:RC_latest .
+        - docker tag stellar-erbaseline::RC_latest data61/stellar-erbaseline:RC_$ER_VERSION
+        - echo "Release a stage build."
+        - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+        - docker push data61/stellar-erbaseline:latest
+        - docker push data61/stellar-erbaseline:RC_$ER_VERSION
