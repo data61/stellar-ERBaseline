@@ -22,6 +22,7 @@ jobs:
     - stage: staging
       if: branch = master
       script:
+        - bash configure-maven.sh
         - mvn package
         - echo "Creating stage docker for ERBaseline version [$ER_VERSION]"
         - docker build -f docker/Dockerfile -t stellar-erbaseline:RC_latest .
