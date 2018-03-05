@@ -17,8 +17,7 @@ jobs:
   include:
     - stage: test
       script:
-        - bash configure-maven.sh
-        - mvn -B verify
+        - mvn clean verify
     - stage: staging
       if: branch = master
       script:
