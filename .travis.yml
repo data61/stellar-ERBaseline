@@ -24,10 +24,10 @@ jobs:
       script:
         - cp .travis.settings.xml $HOME/.m2/settings.xml
         - mvn package
-        - echo "Creating stage docker for ERBaseline version [$ER_VERSION]"
+        - echo "Creating stage docker for ERBaseline version [${env.ER_VERSION}]"
         - docker build -f docker/Dockerfile -t stellar-erbaseline:RC_latest .
         - docker tag stellar-erbaseline::RC_latest data61/stellar-erbaseline:RC_$ER_VERSION
         - echo "Release a stage build."
-        - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
+        - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
         - docker push data61/stellar-erbaseline:latest
-        - docker push data61/stellar-erbaseline:RC_$ER_VERSION
+        - docker push data61/stellar-erbaseline:RC_${env.ER_VERSION}
