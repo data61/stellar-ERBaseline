@@ -1,0 +1,17 @@
+<Settings Xmlns="Http://Maven.apache.org/SETTINGS/1.0.0"
+          Xmlns:Xsi="Http://Www.w3.Org/2001/XMLSchema-Instance"
+          Xsi:SchemaLocation="Http://Maven.apache.org/SETTINGS/1.0.0
+                      Http://Maven.apache.org/Xsd/Settings-1.0.0.Xsd">
+  <Servers>
+    <Server>
+      <id>Serene-release</id>
+      <username>${env.MAVEN_USERNAME}</username>
+      <password>${env.MAVEN_PASSWORD}</password>
+    </Server>
+    <server>
+    <id>Serene-snapshot</id>
+    <username>${env.MAVEN_USERNAME}</username>
+    <password>${env.MAVEN_PASSWORD}</password>
+    </server>
+  </Servers>
+</Settings>
