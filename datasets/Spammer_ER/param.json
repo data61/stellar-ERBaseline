@@ -1,0 +1,21 @@
+{
+  "prefix": "datasets/Spammer_ER",
+  "dataFormat": "epgm",
+  "fileSources": [
+    "spammer_with_names_day_0_morning_seed1234.epgm"
+  ],
+  "outputFile": "output.epgm",
+  "attributes": {
+    "sex": 0.9,
+    "ageGroup": 0.9,
+    "name": 0.9
+  },
+  "sessionId": "44c8a9d8-0161-1000-5d6c-8623d70e48a5",
+  "resultUrl": "https://requestb.in/1jveop11",
+  "options": {
+    "bucketsize": 1000,
+    "similarity": 0.5,
+    "seed": -1,
+    "ground_truth":"spammer_er_set_0_seed1234_ground_truth_pair.csv"
+  }
+}

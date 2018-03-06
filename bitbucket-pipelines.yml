@@ -1,0 +1,22 @@
+image: wangzhen263/image_ojdk8_mvn3:0.0.1
+pipelines:
+  default:
+    - step:
+        script:
+          - bash configure-maven.sh
+          - mvn -B verify
+  tags:
+    rel-*:
+      - step:
+        script:
+          - bash configure-maven.sh
+          - mvn package
+        artifacts:
+          - target/Baseline-*-jar-with-dependencies.jar
+      - step:
+        name: Deploy
+        trigger: manual
+        script:
+          - docker build -f docker/Dockerfile -t stellar-erbaseline:$BITBUCKET_TAG .
+          - docker tag stellar-erbaseline:$BITBUCKET_TAG $DOCKER_USER/:stellar-erbaseline:$BITBUCKET_TAG
+          - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"

@@ -1,14 +1,20 @@
 import com.beust.jcommander.JCommander;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import data.Record;
 import er.rest.HttpRequestClient;
-import er.rest.api.RestParameters;
+import org.json.simple.JSONObject;
 import utils.ERProfile;
 import er.rest.RestServer;
 
+import java.io.FileReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import er.ER;
+import utils.JSONConfig;
 
 public class Main {
     static RestServer restServer;
@@ -39,22 +45,32 @@ public class Main {
             System.out.println("Output results: " + results.size());
 
             er.writeResults(results);
-        } else if (para.url != null) {
+        } else if (para.url != null && para.jsonDir != null) {
             HttpRequestClient postClient = new HttpRequestClient();
 
-            RestParameters rp = new RestParameters();
-            rp.prefix = "datasets/ACM_DBLP";
-            rp.dataformat = "epgm";
-            rp.fileSources = "er_acm_dblp2.epgm";
-            rp.outputFile = "output.epgm";
+            JSONConfig rp = JSONConfig.createConfig(new FileReader(para.jsonDir));
+            JsonObject jobj = new JsonObject();
+            jobj.addProperty("sessionId","44c8a9d8-0161-1000-5d6c-8623d70e48a5");
+            jobj.addProperty("resultUrl","https://requestb.in/1jveop11");
+            jobj.addProperty("prefix",rp.prefix);
 
-            Map<String, Double> am = new HashMap<>();
-            am.put("venue", 0.5);
-            am.put("author", 0.7);
-            am.put("title", 0.9);
-            rp.attributes = am;
+            JsonArray jarray = new JsonArray();
+            rp.fileSources.forEach(f -> jarray.add(f));
+            jobj.add("fileSources",jarray);
 
-            int code = postClient.post(para.url, rp);
+            jobj.addProperty("dataFormat",rp.dataFormat);
+            jobj.addProperty("outputFile",rp.outputFile);
+
+            JsonObject jattr = new JsonObject();
+            rp.attributes.forEach((k,v)->jattr.addProperty(k,v));
+            jobj.add("attributes",jattr);
+
+            JsonObject jopts = new JsonObject();
+            rp.options.forEach((k,v)->jopts.addProperty(k,v));
+            jobj.add("options",jopts);
+
+            System.out.println(jobj.toString());
+            int code = postClient.post(para.url, jobj);
             System.out.println("HTTP Response code: " + code);
         } else {
             jCommander.usage();

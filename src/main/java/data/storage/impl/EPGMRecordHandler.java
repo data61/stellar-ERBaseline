@@ -60,28 +60,35 @@ public class EPGMRecordHandler implements DataSource {
         List<Edge> edges = graph.getEdges().asList();
 
         Set<String> labels = vertexes.stream().map(vertex -> vertex.getLabel()).collect(Collectors.toSet());
-        HashMap<String, Integer> rootMap = new HashMap<>();
-        labels.forEach(label -> rootMap.put(label, 0));
+        String rootSubgraph = labels.iterator().next();
 
-        edges.forEach(e -> {
-                vertexes.stream().filter(v -> e.getSrc().equals(v.getId()))
-                    .forEach(v -> rootMap.put(v.getLabel(), rootMap.get(v.getLabel()) + 1));
-            }
-        );
+        if (labels.size() > 1) {
+            HashMap<String, Integer> rootMap = new HashMap<>();
+            labels.forEach(label -> rootMap.put(label, 0));
 
-        List list = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList());
-        System.out.println(rootMap.toString());
-        System.out.println(list.toString());
+            edges.forEach(e -> {
+                        vertexes.stream().filter(v -> e.getSrc().equals(v.getId()))
+                                .forEach(v -> rootMap.put(v.getLabel(), rootMap.get(v.getLabel()) + 1));
+                    }
+            );
 
-        String rootSubgraph = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList()).get(0).getKey();
+            List list = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList());
+            System.out.println(rootMap.toString());
+            System.out.println(list.toString());
+
+            rootSubgraph = rootMap.entrySet().stream().filter(r -> r.getValue() == 0).collect(Collectors.toList()).get(0).getKey();
+        }
 
         System.out.println("Reading EPGM on sub-root: " + rootSubgraph);
         // Loop through the sub-graphs
 
-        List<Vertex> papers = vertexes.stream().filter(v->v.getLabel().equals(rootSubgraph)).collect(Collectors.toList());
-        System.out.println(papers.size());
+        //Variable in lambda should be final
+        String final_rootSubgraph = rootSubgraph;
 
-        vertexes.stream().filter(vertex -> vertex.getLabel().equals(rootSubgraph)).collect(Collectors.toList())
+        List<Vertex> papers = vertexes.stream().filter(v->v.getLabel().equals(final_rootSubgraph)).collect(Collectors.toList());
+//        System.out.println(papers.size());
+
+        vertexes.stream().filter(vertex -> vertex.getLabel().equals(final_rootSubgraph)).collect(Collectors.toList())
                 .forEach(vertex -> {
                     Set<Attribute> attrSet = new HashSet<>();
                     attrSet.add(new Attribute("id", vertex.getId().toString()));
@@ -159,11 +166,13 @@ public class EPGMRecordHandler implements DataSource {
     }
 
     public void writeEPGMFromRecords(Set<Record> records, String fileOutput) {
+        System.out.println("writeEPGMFromRecords: writing " + records.size() + " records to dir: " + fileOutput);
         StellarGraph graph = graphCollection.get(0);
         List<Vertex> vertexes = graph.getVertices().asList();
         List<Edge> edgesNew = new ArrayList<>();
 
         records.forEach(record -> {
+            if (record == null) System.out.println("######################## empty record");
             Map<String, Attribute> attributes = record.getAttributes();
             Attribute id = attributes.get("id");
 
@@ -181,6 +190,7 @@ public class EPGMRecordHandler implements DataSource {
                     Vertex src = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalI))).collect(Collectors.toList()).get(0);
                     if (src != null) {
                         for (int j = i + 1; j < idStackHead.size(); ++j) {
+//                            System.out.println("i: " + i + " j: " + j);
                             int finalJ = j;
                             Vertex dest = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalJ))).collect(Collectors.toList()).get(0);
                             if (dest != null) {
@@ -193,7 +203,10 @@ public class EPGMRecordHandler implements DataSource {
             }
         });
 
-        StellarGraph graphNew = graph.unionEdges(stellarFactory.createMemory(edgesNew, Edge.class));
-        graphCollection.union(graphNew).write().json(fileOutput);
+//        System.out.println("No. of new edges: " + edgesNew.size());
+        if (edgesNew.size() > 0) {
+            StellarGraph graphNew = graph.unionEdges(stellarFactory.createMemory(edgesNew, Edge.class));
+            graphCollection.union(graphNew).write().json(fileOutput);
+        }
     }
 }
