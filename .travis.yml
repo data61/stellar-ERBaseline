@@ -19,7 +19,7 @@ jobs:
     - stage: test
       script:
         - mvn clean verify
-    - stage: develop
+    - stage: development
       if: branch = travis
       script:
         - mvn package
