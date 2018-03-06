@@ -25,10 +25,10 @@ jobs:
       if: branch = master
       script:
         - mvn package
-        - echo "Creating stage docker for ERBaseline version [${env.ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t ${env.ER_RC_LATEST} .
-        - docker tag ${env.ER_RC_LATEST} data61/${env.ER_RC_VERSION}
+        - echo "Creating stage docker for ERBaseline version [${ER_VERSION}]"
+        - docker build -f docker/Dockerfile -t ${ER_RC_LATEST} .
+        - docker tag ${ER_RC_LATEST} data61/${ER_RC_VERSION}
         - echo "Release a stage build."
         - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
-        - docker push data61/${env.ER_RC_LATEST}
-        - docker push data61/${env.ER_RC_VERSION}
+        - docker push data61/${ER_RC_LATEST}
+        - docker push data61/${ER_RC_VERSION}
