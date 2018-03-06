@@ -38,7 +38,7 @@ jobs:
     - docker push data61/${ER_RC_VERSION}
     - docker push data61/${ER_RC_LATEST}
   - stage: release
-    if: tag =~ ^release-*$"
+    if: tag =~ ^release-.*$
     script:
     - mvn package
     - echo "Releasing docker for ERBaseline version [${ER_VERSION}]"
