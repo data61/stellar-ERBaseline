@@ -10,6 +10,8 @@ env:
                          -Dexec.args='${project.version}' \
                          --non-recursive \
                          org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+    - ER_RC_VERSION: stellar-erbaseline:rc_${env.ER_VERSION}
+    - ER_RC_LATEST: stellar-erbaseline:rc_latest
 
 
 before_install:
@@ -22,12 +24,11 @@ jobs:
     - stage: staging
       if: branch = master
       script:
-        - cp .travis.settings.xml $HOME/.m2/settings.xml
         - mvn package
         - echo "Creating stage docker for ERBaseline version [${env.ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t stellar-erbaseline:RC_latest .
-        - docker tag stellar-erbaseline::RC_latest data61/stellar-erbaseline:RC_$ER_VERSION
+        - docker build -f docker/Dockerfile -t ${env.ER_RC_LATEST} .
+        - docker tag ${env.ER_RC_LATEST} data61/${env.ER_RC_VERSION}
         - echo "Release a stage build."
         - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
-        - docker push data61/stellar-erbaseline:latest
-        - docker push data61/stellar-erbaseline:RC_${env.ER_VERSION}
+        - docker push data61/${env.ER_RC_LATEST}
+        - docker push data61/${env.ER_RC_VERSION}
