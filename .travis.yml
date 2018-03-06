@@ -20,7 +20,7 @@ jobs:
       script:
         - mvn clean verify
     - stage: staging
-      if: branch = master
+      if: branch = travis
       script:
         - mvn package
         - echo "Creating stage docker for ERBaseline version [${ER_VERSION}]"
