@@ -9,7 +9,7 @@ env:
                          -Dexec.executable="echo" \
                          -Dexec.args='${project.version}' \
                          --non-recursive \
-                         org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+                         org.codehaus.mojo:exec-maven-plugin:1.6.0:exec)
     - ER_RC_VERSION: stellar-erbaseline:rc_${ER_VERSION}
     - ER_RC_LATEST: stellar-erbaseline:rc_latest
     - ER_LATEST: stellar-erbaseline:latest
@@ -28,12 +28,12 @@ jobs:
       script:
         - mvn package
         - echo "Creating stage docker for ERBaseline version [${ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t data61/${ER_RC_LATEST} .
-        - docker tag data61/${ER_RC_LATEST} data61/${ER_RC_VERSION}
+        - docker build -f docker/Dockerfile -t wangzhen263/${ER_RC_LATEST} .
+        - docker tag wangzhen263/${ER_RC_LATEST} wangzhen263/${ER_RC_VERSION}
         - echo "Release a stage build."
         - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
-        - docker push data61/${ER_RC_LATEST}
-        - docker push data61/${ER_RC_VERSION}
+        - docker push wangzhen263/${ER_RC_LATEST}
+        - docker push wangzhen263/${ER_RC_VERSION}
     - stage: release
       if: tag =~ ^release-*$"
       script:
