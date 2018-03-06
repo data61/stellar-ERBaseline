@@ -1,0 +1,8 @@
+{
+    "prefix":"datasets/ACM_DBLP",
+    "outputFile":"output.xml",
+    "dataFormat":"csv",
+    "fileSources":["ACM.csv","DBLP2.csv"],
+    "attributes":{"year":1.0,"venue":0.5, "authors":0.7, "title":0.9},
+    "options":{"VenueDict":"venueDict.csv"}
+}

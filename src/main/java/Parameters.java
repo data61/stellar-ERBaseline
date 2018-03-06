@@ -13,6 +13,10 @@ public class Parameters {
     @Parameter(names = {"--help", "-h"}, help = true)
     public boolean help;
 
-    @Parameter(names = {"--client", "-cl"}, description = "A rest client sends a rest request to the rest server, use -c [dataset]")
+    @Parameter(names = {"--client", "-cl"}, description = "A rest client sends a rest request, use -c [url]." +
+            " It must combine with option --json")
     public String url;
+
+    @Parameter(names = {"--json", "-j"}, description = "To load a json request in client mode, use -j [config.json].")
+    public String jsonDir;
 }

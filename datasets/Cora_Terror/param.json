@@ -1,0 +1,10 @@
+{
+    "prefix":"datasets/Cora_Terror",
+    "dataFormat":"epgm",
+    "fileSources":["cora_terror.epgm"],
+    "outputFile":"output.epgm",
+    "attributes":{"address":0.9, "full_name":0.9},
+    "sessionId":"44c8a9d8-0161-1000-5d6c-8623d70e48a5",
+    "resultUrl":"https://requestb.in/1jveop11",
+    "options":{"bucketsize":500, "similarity":0.5, "seed":1234}
+}

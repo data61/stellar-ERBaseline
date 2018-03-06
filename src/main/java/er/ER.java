@@ -1,6 +1,9 @@
 package er;
 
+import data.CoraMatcherMerger;
 import data.Record;
+import data.ReferenceMatcherMerger;
+import data.SpammerMatcherMerger;
 import data.io.XMLifyYahooData;
 import data.storage.impl.DBLPACMToCSV;
 import data.storage.impl.GetRecordsFromCSV;
@@ -8,26 +11,33 @@ import data.storage.impl.GetRecordsFromYahooXML;
 import data.storage.impl.EPGMRecordHandler;
 
 import deduplication.RSwoosh;
-import er.rest.api.RestParameters;
 import org.xml.sax.SAXException;
 import utils.DataFileFormat;
+import utils.JSONConfig;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InvalidObjectException;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 
 public class ER {
 	static final String MATCHER_MERGER_INTERFACE = "data.MatcherMerger";
+	private static final Map<String, String[]> defaultMatcherMergers = Collections.unmodifiableMap(
+			new HashMap<String, String[]>() {{
+				put("data.ReferenceMatcherMerger", ReferenceMatcherMerger.keyWords);
+				put("data.CoraMatcherMerger", CoraMatcherMerger.keyWords);
+				put("data.SpammerMatcherMerger", SpammerMatcherMerger.keyWords);
+			}});
+
 	Class matcherMerger;
-	Properties properties;
+	JSONConfig properties;
 	EPGMRecordHandler epgmParser;
 
 	//Recursively checks if testClass or any of its ancestor class implements MathcerMerger interface
@@ -52,41 +62,27 @@ public class ER {
 
 	public Set<Record> runRSwoosh(Set<Record> records)
 			throws SAXException, IOException, InvalidObjectException, ParserConfigurationException {
-		try {
-		    Constructor mmConstructor = matcherMerger.getConstructor(Properties.class);
-			Object matcherMerger = mmConstructor.newInstance(properties);
-			System.out.println("Running RSwoosh on " + records.size() + " records.");
-
-			Set<String> venues = new HashSet<>();
-			records.forEach(r -> {
-				Iterator it = r.getAttribute("venue").iterator();
-				venues.add((String)it.next());
-			});
-
-			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
-			System.out.println("After running RSwoosh, there are " + result.size() + " records.");
-
-			return result;
-		} catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
+		return runRSwoosh(records, properties);
 	}
 
-	public Set<Record> runRSwoosh(Set<Record> records, RestParameters parameters)
+	public Set<Record> runRSwoosh(Set<Record> records, JSONConfig parameters)
 			throws SAXException, IOException, InvalidObjectException, ParserConfigurationException {
 		try {
-			Constructor mmConstructor = matcherMerger.getConstructor(RestParameters.class);
+			Constructor mmConstructor = matcherMerger.getConstructor(JSONConfig.class);
 			Object matcherMerger = mmConstructor.newInstance(parameters);
 			System.out.println("Running RSwoosh on " + records.size() + " records.");
 
-			Set<String> venues = new HashSet<>();
-			records.forEach(r -> {
-				Iterator it = r.getAttribute("venue").iterator();
-				venues.add((String)it.next());
-			});
+			long mins = 0;
+			long secs = 0;
+			long runTime = 0;
+			long startTime = System.currentTimeMillis();
+//			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
+			Set<Record> result = RSwoosh.execute_with_blocking((data.MatcherMerger)matcherMerger, parameters, records);
+			runTime = System.currentTimeMillis() - startTime;
+			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
+			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));
+			System.out.println("\t" + mins + " m, " + secs + " s");
 
-			Set<Record> result = RSwoosh.execute((data.MatcherMerger)matcherMerger, records);
 			System.out.println("After running RSwoosh, there are " + result.size() + " records.");
 
 			return result;
@@ -97,27 +93,43 @@ public class ER {
 	}
 
 	public Set<Record> parseConfigFile(String configFile) throws Exception {
-		properties = new Properties();
-		properties.load(new FileInputStream(configFile));
-		String fileSources = properties.getProperty("FileSources");
-		if (fileSources == null){
-			throw (new Exception("No File Sources specified!"));
+		properties = JSONConfig.createConfig(new FileReader(configFile));
+		System.out.println("#####: " + properties.toString());
+
+		if (!properties.isValid()){
+			throw (new Exception("Invalid JSON config!"));
 		}
 
-		String matcherMerger = properties.getProperty("MatcherMerger");
-		RestParameters parameters = new RestParameters();
-		parameters.setPropertiesFromConfigFile(properties);
-
-		return parseRecords(parameters, matcherMerger);
+		return parseRecords(properties);
 	}
 
-	public Set<Record> parseRecords(RestParameters parameters, String mm)
+	public Set<Record> parseRecords(JSONConfig parameters)
 			throws Exception {
 
-		List<String> inputFiles = new ArrayList<>();
-		inputFiles = Arrays.asList(parameters.fileSources.split(","));
+		if (parameters.matcherMerger == null) {
+			if (parameters.attributes.size() < 1)
+				parameters.matcherMerger = (String) defaultMatcherMergers.keySet().toArray()[0];
+			else {
+				Set<String> keys = parameters.attributes.keySet();
+				AtomicReference<String> ret = new AtomicReference<>("");
+				AtomicReference<Double> score = new AtomicReference<>(0.0);
 
-		matcherMerger = Class.forName(mm);
+				defaultMatcherMergers.forEach((k, v) -> {
+					Set<String> keyWords = new HashSet<String>(Arrays.asList(v));
+					Set<String> common = keyWords.stream().filter(keys::contains).collect(Collectors.toSet());
+					double newScore = (double) common.size() / (double) keys.size();
+					if (newScore > score.get()) {
+						score.set(newScore);
+						ret.set(k);
+					}
+				});
+
+				parameters.matcherMerger = ret.get();
+			}
+		}
+
+		System.out.println("matcherMerger: " + parameters.matcherMerger);
+		matcherMerger = Class.forName(parameters.matcherMerger);
 		if (matcherMerger == null){
 			throw (new Exception("No MatcherMerger Class specified!"));
 		}
@@ -125,6 +137,9 @@ public class ER {
 			throw (new Exception("Given MatcherMerger class does not implement SimpleMatcherMerger interface!"));
 
 		}
+
+		List<String> inputFiles = new ArrayList<>();
+		inputFiles = parameters.fileSources;
 
 		Map<Path, DataFileFormat> parsers = new HashMap();
 
@@ -173,16 +188,10 @@ public class ER {
 
 	public void writeResults(Set<Record> results)
 			throws IOException {
-
-		String outputFile = properties.getProperty("OutputFile");
-		RestParameters para = new RestParameters();
-		para.outputFile = outputFile;
-		para.prefix = properties.getProperty("Prefix");
-
-		this.writeResults(results, para);
+		this.writeResults(results, properties);
 	}
 
-	public void writeResults(Set<Record> results, RestParameters parameters)
+	public void writeResults(Set<Record> results, JSONConfig parameters)
 			throws IOException {
 
 		String outputFile = parameters.outputFile;

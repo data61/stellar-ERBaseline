@@ -6,7 +6,7 @@
 
     <groupId>Serene.EntityResolution</groupId>
     <artifactId>Baseline</artifactId>
-    <version>1.2.2</version>
+    <version>1.3.3</version>
     <name>Stellar ER Baseline</name>
 
     <properties>
@@ -97,6 +97,17 @@
             <version>1.72</version>
         </dependency>
 
+        <dependency>
+            <groupId>info.debatty</groupId>
+            <artifactId>java-lsh</artifactId>
+            <version>0.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>

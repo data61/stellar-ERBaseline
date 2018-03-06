@@ -2,20 +2,18 @@ package data;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import er.rest.api.RestParameters;
-import org.jvnet.hk2.internal.Collector;
-import org.netlib.lapack.Ssycon;
 import utils.DataFileFormat;
+import utils.JSONConfig;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class ReferenceMatcherMerger extends BasicMatcherMerger implements
         MatcherMerger {
+    public static String keyWords[] = new String[]{"title","author","venue","year"};
 
     private JaroTFIDFMatcher stringMatcher;
     private JaroTFIDFMatcher authorMatcher;
@@ -23,50 +21,27 @@ public class ReferenceMatcherMerger extends BasicMatcherMerger implements
     private List<String> keyAttributes;
     private DataFileFormat format;
     private Gson gson;
+    private Map<String, String> gotAttrkeys;
+    private Type type;
 
-    public ReferenceMatcherMerger(Properties props)
+    public ReferenceMatcherMerger(JSONConfig props)
             throws FileNotFoundException, UnsupportedEncodingException {
 
         _factory = new SimpleRecordFactory();
         gson = new Gson();
 
-        String tt = props.getProperty("TitleThreshold");
-        float tf = tt == null ? 0.9F : Float.parseFloat(tt);
+        float tf = props.attributes.get("title").floatValue();
+        float auf = props.attributes.get("author").floatValue();
+        float vtf = props.attributes.get("venue").floatValue();
 
-        String au = props.getProperty("AuthorThreshold");
-        float auf = au == null ? 0.7F : Float.parseFloat(au);
-
-        String vt = props.getProperty("VenueThreshold");
-        float vtf = vt == null ? 0.5F : Float.parseFloat(vt);
-
-        keyAttributes = Arrays.asList(props.getProperty("Attributes").split(",")).stream().map(String::trim).collect(Collectors.toList());
-
-        format = DataFileFormat.fromString(props.getProperty("Dataformat"));
-
-        stringMatcher = new JaroTFIDFMatcher(tf);
-        authorMatcher = new JaroTFIDFMatcher(auf);
-        venueMatcher = new VenueMatcher(vtf, props.getProperty("Prefix")+"/"+props.getProperty("VenueDict"));
-    }
-
-    public ReferenceMatcherMerger(RestParameters props)
-            throws FileNotFoundException, UnsupportedEncodingException {
-
-        _factory = new SimpleRecordFactory();
-        gson = new Gson();
-
-        float tf = props.attributes.get("TitleThreshold").floatValue();
-        float auf = props.attributes.get("AuthorThreshold").floatValue();
-        float vtf = props.attributes.get("VenueThreshold").floatValue();
-
-        keyAttributes = props.matchers;
-        format = DataFileFormat.fromString(props.dataformat);
+        keyAttributes = new ArrayList<>(props.attributes.keySet());
+        format = DataFileFormat.fromString(props.dataFormat);
 
         stringMatcher = new JaroTFIDFMatcher(tf);
         authorMatcher = new JaroTFIDFMatcher(auf);
 
-        System.out.println("#### vtf " + vtf);
         venueMatcher = new VenueMatcher(vtf, props.prefix+"/"+"venueDict.csv");
-        System.out.println("@@@@@@@@@ done");
+        type = new TypeToken<Map<String, String>>(){}.getType();
     }
 
     protected double calculateConfidence(double c1, double c2)
@@ -77,7 +52,6 @@ public class ReferenceMatcherMerger extends BasicMatcherMerger implements
     protected boolean matchInternal(Record r1, Record r2) {
         Set<String> attrkeys = r1.getAttributes().keySet();
         Map<String, String> gotAttrkeys = new HashMap<>();
-        Type type = new TypeToken<Map<String, String>>(){}.getType();
 
         keyAttributes.forEach(ka->{
             Optional<String> ret = attrkeys.stream().parallel().filter(attrkey->attrkey.toLowerCase().contains(ka.toLowerCase())).findAny();

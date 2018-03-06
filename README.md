@@ -17,9 +17,9 @@ mvn package
 2.You can check the `help` command to understand parameters
 
 ```bash
-java -jar "target/Baseline-1.2.1-jar-with-dependencies.jar" --help
+java -jar "target/Baseline-1.3.3-jar-with-dependencies.jar" --help
 
-Usage: Stellar ER Baseline(1.2.1) [options]
+Usage: Stellar ER Baseline(1.3.3) [options]
   Options:
     --cli, -c
       To run in cmd mode, use -c [dataset]
@@ -32,12 +32,12 @@ Usage: Stellar ER Baseline(1.2.1) [options]
 3.To run ER in command line mode
 
 ```bash
-java -jar "target/Baseline-1.2.1-jar-with-dependencies.jar" -c datasets/ACM_DBLP/configcsv.conf
+java -jar "target/Baseline-1.3.3-jar-with-dependencies.jar" -c datasets/ACM_DBLP/param.json
 ```
 4.To run ER in REST-HTTP mode
 
 ```bash
-java -jar "target/Baseline-1.2.1-jar-with-dependencies.jar" -r
+java -jar "target/Baseline-1.3.3-jar-with-dependencies.jar" -r
 ```
 
 References
