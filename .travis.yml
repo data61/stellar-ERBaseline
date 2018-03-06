@@ -1,13 +1,11 @@
-sudo: required
-
 language: java
 
 jdk: oraclejdk8
 env:
   global:
     - ER_VERSION: $(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.6.0:exec)
-    - ER_RC_VERSION: stellar-erbaseline:rc_${ER_VERSION}
-    - ER_RC_LATEST: stellar-erbaseline:rc_latest
+    - ER_RC_VERSION: stellar-erbaseline:${ER_VERSION}-snapshot
+    - ER_RC_LATEST: stellar-erbaseline:latest-snapshot
     - ER_LATEST: stellar-erbaseline:latest
     - ER_VERSION: stellar-erbaseline:${ER_VERSION}
 
@@ -19,17 +17,28 @@ jobs:
     - stage: test
       script:
         - mvn clean verify
+    - stage: development
+      if: branch = develop
+      script:
+        - mvn package
+        - echo "Creating development docker for ERBaseline version [${ER_VERSION}]"
+        - docker build -f docker/Dockerfile -t ${DOCKER_USER}/${ER_RC_LATEST}d .
+        - docker tag ${DOCKER_USER}/${ER_RC_LATEST}d ${DOCKER_USER}/${ER_RC_VERSION}d
+        - echo "Release a development build."
+        - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+        - docker push ${DOCKER_USER}/${ER_RC_VERSION}d
+        - docker push ${DOCKER_USER}/${ER_RC_LATEST}d
     - stage: staging
       if: branch = master
       script:
         - mvn package
         - echo "Creating stage docker for ERBaseline version [${ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t wangzhen263/${ER_RC_LATEST} .
-        - docker tag wangzhen263/${ER_RC_LATEST} wangzhen263/${ER_RC_VERSION}
+        - docker build -f docker/Dockerfile -t data61/${ER_RC_LATEST} .
+        - docker tag data61/${ER_RC_LATEST} data61/${ER_RC_VERSION}
         - echo "Release a stage build."
-        - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
-        - docker push wangzhen263/${ER_RC_LATEST}
-        - docker push wangzhen263/${ER_RC_VERSION}
+        - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+        - docker push data61/${ER_RC_VERSION}
+        - docker push data61/${ER_RC_LATEST}
     - stage: release
       if: tag =~ ^release-*$"
       script:
@@ -38,6 +47,6 @@ jobs:
         - docker build -f docker/Dockerfile -t data61/${ER_LATEST} .
         - docker tag data61/${ER_LATEST} data61/${ER_VERSION}
         - echo "create a release build."
-        - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
+        - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
         - docker push data61/${ER_LATEST}
         - docker push data61/${ER_VERSION}
