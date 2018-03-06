@@ -12,6 +12,8 @@ env:
                          org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
     - ER_RC_VERSION: stellar-erbaseline:rc_${ER_VERSION}
     - ER_RC_LATEST: stellar-erbaseline:rc_latest
+    - ER_LATEST: stellar-erbaseline:latest
+    - ER_VERSION: stellar-erbaseline:${ER_VERSION}
 
 
 before_install:
@@ -26,9 +28,20 @@ jobs:
       script:
         - mvn package
         - echo "Creating stage docker for ERBaseline version [${ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t ${ER_RC_LATEST} .
-        - docker tag ${ER_RC_LATEST} data61/${ER_RC_VERSION}
+        - docker build -f docker/Dockerfile -t data61/${ER_RC_LATEST} .
+        - docker tag data61/${ER_RC_LATEST} data61/${ER_RC_VERSION}
         - echo "Release a stage build."
         - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
         - docker push data61/${ER_RC_LATEST}
         - docker push data61/${ER_RC_VERSION}
+    - stage: release
+      if: tag =~ ^release-*$"
+      script:
+        - mvn package
+        - echo "Releasing docker for ERBaseline version [${ER_VERSION}]"
+        - docker build -f docker/Dockerfile -t data61/${ER_LATEST} .
+        - docker tag data61/${ER_LATEST} data61/${ER_VERSION}
+        - echo "create a release build."
+        - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
+        - docker push data61/${ER_LATEST}
+        - docker push data61/${ER_VERSION}
