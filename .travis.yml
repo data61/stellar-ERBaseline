@@ -10,7 +10,7 @@ env:
                          -Dexec.args='${project.version}' \
                          --non-recursive \
                          org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
-    - ER_RC_VERSION: stellar-erbaseline:rc_${env.ER_VERSION}
+    - ER_RC_VERSION: stellar-erbaseline:rc_${ER_VERSION}
     - ER_RC_LATEST: stellar-erbaseline:rc_latest
 
 
