@@ -24,12 +24,12 @@ jobs:
         script:
           - mvn package
           - echo "Creating developing docker for ERBaseline version [${ER_VERSION}]"
-          - docker build -f docker/Dockerfile -t ${DOCKER_USER}/${ER_RC_LATEST}d .
-          - docker tag ${DOCKER_USER}/${ER_RC_LATEST}d ${DOCKER_USER}/${ER_RC_VERSION}d
+          - docker build -f docker/Dockerfile -t ${DOCKER_USER}/${ER_RC_LATEST} .
+          - docker tag ${DOCKER_USER}/${ER_RC_LATEST} ${DOCKER_USER}/${ER_RC_VERSION}
           - echo "Release a developing build."
           - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
-          - docker push ${DOCKER_USER}/${ER_RC_VERSION}d
-          - docker push ${DOCKER_USER}/${ER_LATEST}d
+          - docker push ${DOCKER_USER}/${ER_RC_VERSION}
+          - docker push ${DOCKER_USER}/${ER_LATEST}
     - stage: staging
         if: branch = master
         script:
