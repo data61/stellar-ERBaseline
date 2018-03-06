@@ -3,17 +3,13 @@ sudo: required
 language: java
 
 jdk: oraclejdk8
-# env:
-#   global:
-#     - ER_VERSION: $(mvn -q \
-#                          -Dexec.executable="echo" \
-#                          -Dexec.args='${project.version}' \
-#                          --non-recursive \
-#                          org.codehaus.mojo:exec-maven-plugin:1.6.0:exec)
-#     - ER_RC_VERSION: stellar-erbaseline:rc_${ER_VERSION}
-#     - ER_RC_LATEST: stellar-erbaseline:rc_latest
-#     - ER_LATEST: stellar-erbaseline:latest
-#     - ER_VERSION: stellar-erbaseline:${ER_VERSION}
+env:
+  global:
+    - ER_VERSION: $(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.6.0:exec)
+    - ER_RC_VERSION: stellar-erbaseline:rc_${ER_VERSION}
+    - ER_RC_LATEST: stellar-erbaseline:rc_latest
+    - ER_LATEST: stellar-erbaseline:latest
+    - ER_VERSION: stellar-erbaseline:${ER_VERSION}
 
 
 before_install:
@@ -26,15 +22,6 @@ jobs:
     - stage: staging
       if: branch = master
       script:
-        - ER_VERSION=$(mvn -q \
-            -Dexec.executable="echo" \
-            -Dexec.args='${project.version}' \
-            --non-recursive \
-            org.codehaus.mojo:exec-maven-plugin:1.6.0:exec)
-        - ER_RC_VERSION=stellar-erbaseline:rc_${ER_VERSION}
-        - ER_RC_LATEST=stellar-erbaseline:rc_latest
-        - ER_LATEST=stellar-erbaseline:latest
-        - ER_VERSION=stellar-erbaseline:${ER_VERSION}
         - mvn package
         - echo "Creating stage docker for ERBaseline version [${ER_VERSION}]"
         - docker build -f docker/Dockerfile -t wangzhen263/${ER_RC_LATEST} .
