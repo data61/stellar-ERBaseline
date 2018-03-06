@@ -27,7 +27,7 @@ jobs:
         - docker build -f docker/Dockerfile -t wangzhen263/${ER_RC_LATEST} .
         - docker tag wangzhen263/${ER_RC_LATEST} wangzhen263/${ER_RC_VERSION}
         - echo "Release a stage build."
-        - docker login -u "${env.DOCKER_USER}" -p "${env.DOCKER_PASS}"
+        - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
         - docker push wangzhen263/${ER_RC_LATEST}
         - docker push wangzhen263/${ER_RC_VERSION}
     - stage: release
