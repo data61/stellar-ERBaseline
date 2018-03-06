@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import validation.Evaluator;
 
 public class ER {
 	static final String MATCHER_MERGER_INTERFACE = "data.MatcherMerger";
@@ -70,7 +71,7 @@ public class ER {
 		try {
 			Constructor mmConstructor = matcherMerger.getConstructor(JSONConfig.class);
 			Object matcherMerger = mmConstructor.newInstance(parameters);
-			System.out.println("Running RSwoosh on " + records.size() + " records.");
+			System.out.println("Running Stellar-ER on " + records.size() + " records.");
 
 			long mins = 0;
 			long secs = 0;
@@ -81,9 +82,12 @@ public class ER {
 			runTime = System.currentTimeMillis() - startTime;
 			mins = TimeUnit.MILLISECONDS.toMinutes(runTime);
 			secs = TimeUnit.MILLISECONDS.toSeconds(runTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(runTime));
-			System.out.println("\t" + mins + " m, " + secs + " s");
+			System.out.println("Time taken: " + mins + " m, " + secs + " s");
 
-			System.out.println("After running RSwoosh, there are " + result.size() + " records.");
+			System.out.println("After running Stellar-ER, there are " + result.size() + " records.");
+
+			Evaluator eval = new Evaluator(parameters.prefix + "/" + parameters.options.get("ground_truth"));
+			eval.runEval(result);
 
 			return result;
 		} catch(Exception e){
@@ -147,7 +151,7 @@ public class ER {
 			Path filepath = Paths.get(parameters.prefix+"/"+path);
 			boolean exists = Files.exists(filepath);
 			if (!exists)
-				throw (new InvalidObjectException("Data source must be a file. "+ filepath));
+				throw (new InvalidObjectException("Data source not found: "+ filepath));
 
 			if(filepath.toString().lastIndexOf(".") != -1 && filepath.toString().lastIndexOf(".") != 0) {
 				DataFileFormat dataFileFormat = DataFileFormat.fromString(filepath.toString().substring(filepath.toString().lastIndexOf(".") + 1));
@@ -182,7 +186,7 @@ public class ER {
 			}
 		}
 
-		System.out.println("Read records: " + records.size());
+//		System.out.println("Got records: " + records.size());
 		return records;
 	}
 
@@ -209,18 +213,18 @@ public class ER {
 			String dir = parameters.prefix+"/"+outputFile;
 			switch (format){
 				case EPGM:
-					System.out.println("write epgm");
+					System.out.println("Write EPGM...");
 					epgmParser.writeEPGMFromRecords(results, dir);
+					System.out.println("Done.");
 					break;
 				case CSV:
-					System.out.println("write csv");
-
+					System.out.println("Write CSV...");
 					DBLPACMToCSV write = new DBLPACMToCSV(dir);
 					write.writeRecords(results);
+					System.out.println("Done.");
 					break;
 				default:
 					System.out.println("default " + format.toString());
-
 					FileWriter fw = new FileWriter(dir);
 					fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 					XMLifyYahooData.openRecordSet(fw);

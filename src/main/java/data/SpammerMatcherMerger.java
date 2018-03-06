@@ -35,6 +35,9 @@ public class SpammerMatcherMerger extends BasicMatcherMerger implements
         float sf = props.attributes.get("sex").floatValue();
         float af = props.attributes.get("ageGroup").floatValue();
 
+
+        System.out.println("Similarity Threshold - Name: " + nf + " Gender: " + sf + " Age: "+ af);
+
         keyAttributes = new ArrayList<>(props.attributes.keySet());
         format = DataFileFormat.fromString(props.dataFormat);
 

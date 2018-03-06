@@ -32,6 +32,8 @@ public class CoraMatcherMerger extends BasicMatcherMerger implements
         float fnf = props.attributes.get("full_name").floatValue();
         float addf = props.attributes.get("address").floatValue();
 
+        System.out.println("Similarity Threshold - Name: " + fnf + " Address: " + addf);
+
         keyAttributes = new ArrayList<>(props.attributes.keySet());
         format = DataFileFormat.fromString(props.dataFormat);
 

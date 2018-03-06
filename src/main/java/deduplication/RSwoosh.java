@@ -31,7 +31,7 @@ public class RSwoosh
 				for (int j = 0; j < sb.getBucketSize(); j++) {
 					Set<Record> bucket = sb.getRecordFromBucket(j);
 					if (bucket != null) {
-						System.out.print("Bucket " + j + ": " + bucket.size() + "\t");
+						System.out.print("Bucket " + j + ": " + bucket.size());
 						// Step 3: perform matching within the same blocks only, then get and concantenate buckets
 						rmatch.addAll(execute((data.MatcherMerger) mm, bucket));
 					}
@@ -47,13 +47,15 @@ public class RSwoosh
 		Set<Record> records = new HashSet<Record>(recordsOrig);
 		Set<Record> rprime = new HashSet<Record>();
 
+		int count = 0;
 		while (!records.isEmpty())
 		{
-			//System.out.println("R size: " + records.size() + ", R' size: " + rprime.size());
+//			System.out.println("R size: " + records.size() + ", R' size: " + rprime.size());
 
 			// Remove one element from R
 			Record current = records.iterator().next();
 			records.remove(current);
+			count += 1;
 
 			Record buddy = null;
 			for (Record r : rprime)
@@ -76,7 +78,7 @@ public class RSwoosh
 			}
 		}
 
-
+		System.out.println("\t Matching: " + count + "\t New Size: " + rprime.size());
 		return rprime;
 	}
 

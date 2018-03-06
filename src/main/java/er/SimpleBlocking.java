@@ -33,9 +33,9 @@ public class SimpleBlocking {
     private long initial_seed = -1;
     // Attention: to get relevant results, the number of elements per bucket
     // should be at least 100
-    private int buckets = 3000;                                              /* NOTE: Tune this to put entries sparsely into buckets */
+    private int buckets = 100;                                              /* NOTE: Tune this to put entries sparsely into buckets */
     // Size of vectors
-    private int n = 256;                                                    /* NOTE: Tune this to create larger vector. n is the size of the signature (the number of hash functions that are used to produce the signature) */
+    private int n = 1024;                                                    /* NOTE: Tune this to create larger vector. n is the size of the signature (the number of hash functions that are used to produce the signature) */
     // MinHash error rate
     private double minhash_error_rate = 0.9;                                /* NOTE: Tune this to enforce higher similarity  */
     // the number of stages is also sometimes called thge number of bands
@@ -48,7 +48,7 @@ public class SimpleBlocking {
             buckets = Integer.valueOf(props.options.get("bucketsize"));
             minhash_error_rate = Float.valueOf(props.options.get("similarity"));
             initial_seed = Long.valueOf(props.options.get("seed"));
-            System.out.println("Set bucket size to " + buckets + " with seed: " + initial_seed + ", similarity threshold: " + minhash_error_rate);
+            System.out.println("Simple Blocking: set bucket size to " + buckets + " with seed: " + initial_seed + ", similarity threshold: " + minhash_error_rate);
         }
     }
 
@@ -78,7 +78,7 @@ public class SimpleBlocking {
                 switch (propKey) {
                     case "title": case "full_name" : case "name":                                     /* TODO：don't hard code this. */
                         Attribute val = entry.getValue();
-                        String attrstr = val.toString();
+                        String attrstr = val.toString().trim();
                         String[] strTokens = attrstr.split(" |\\;");   /* TODO：remove propKey from the String! */
 
                         // Get signature of record in int[]
@@ -95,7 +95,7 @@ public class SimpleBlocking {
 
                         //Debug START -----
 //                        System.out.println("record: \n" + current.toString());
-//
+
 //                        System.out.println(propKey + " - " + attrstr);
 //                        print(vector);
 //                        System.out.print(" : ");
@@ -121,68 +121,19 @@ public class SimpleBlocking {
 //        }
 //        System.out.println("Length of recContainer at each stage:");
 //        for (int i = 0; i < stages; i++) {
+//            int count = 0;
 //            for (int j=0; j< buckets; j++) {
 //                Set<Record> bucket = getRecordFromBucket(j);
 //                if (bucket != null) {
 //                    System.out.println("Bucket " + j + ": " + bucket.size());
+//                    count += bucket.size();
 //                }
 //            }
+//            System.out.println("Total records: " + count);
 //        }
         //Debug END -----
 
         return true;
-    }
-
-
-    public Set<Record> get_LSH_SignatureNCompare(Set<Record> recordsOrig){
-        // Browse thru records, get their key attribute, use that key attribute value as the hash key, compare the distance between signature
-        MinHash minhash = new MinHash(0.1, 128);
-        int[][] minhashSig = new int[recordsOrig.size()][];
-        String[] title = new String[recordsOrig.size()];
-
-        int num_rec = 0;
-        while (!recordsOrig.isEmpty()) {
-            Record current = recordsOrig.iterator().next();
-            recordsOrig.remove(current);
-
-            Map<String, Attribute> map = current.getAttributes();
-            for(Map.Entry<String, Attribute> entry: map.entrySet()) {   /* TODO: really need to loop through all keys? */
-                String propKey = entry.getKey();
-                switch (propKey) {
-                    case "title":                                       /* TODO：don't hard code this. */
-                        Attribute val = entry.getValue();
-                        String attrstr = val.toString();
-                        String[] strTokens = attrstr.split(" |\\;");   /* TODO：remove propKey from the String! */
-                        minhashSig[num_rec] = minhash.signature(getStringArrInTreeSetInt(strTokens));
-
-                        //Debug START -----
-//                        for(String str : strTokens)
-//                            System.out.print(str + " *** ");
-                        title[num_rec] = attrstr;
-                        System.out.println(propKey + " - " + attrstr);
-                        //Debug END -----
-
-                        break;
-                }
-            }
-            num_rec += 1;
-            System.out.println();
-        }
-
-        //Debug START -----
-        for(int i=0; i<minhashSig.length; i++){
-            for (int j=i+1; j<minhashSig.length;j++){
-                System.out.println(title[i]);
-                System.out.println(title[j]);
-                System.out.println("Signature similarity: " + minhash.similarity(minhashSig[i], minhashSig[j]));
-//                System.out.println("Real similarity (Jaccard index)" +
-//                        MinHash.JaccardIndex(minhashSig[i], minhashSig[j]);
-                System.out.println();
-            }
-        }
-        //Debug END -----
-
-        return recordsOrig;
     }
 
     public int getBucketSize(){
@@ -206,7 +157,7 @@ public class SimpleBlocking {
         {
             // this means this is the first record added for this level
             // so create a container to hold the object
-            recordBuckets.put(bucketId, new HashSet());
+            recordBuckets.put(bucketId, new HashSet<Record>());
         }
 
         Set<Record> recContainer = recordBuckets.get(bucketId);

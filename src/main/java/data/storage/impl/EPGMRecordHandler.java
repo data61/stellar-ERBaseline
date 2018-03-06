@@ -86,7 +86,7 @@ public class EPGMRecordHandler implements DataSource {
         String final_rootSubgraph = rootSubgraph;
 
         List<Vertex> papers = vertexes.stream().filter(v->v.getLabel().equals(final_rootSubgraph)).collect(Collectors.toList());
-        System.out.println(papers.size());
+//        System.out.println(papers.size());
 
         vertexes.stream().filter(vertex -> vertex.getLabel().equals(final_rootSubgraph)).collect(Collectors.toList())
                 .forEach(vertex -> {
@@ -166,11 +166,13 @@ public class EPGMRecordHandler implements DataSource {
     }
 
     public void writeEPGMFromRecords(Set<Record> records, String fileOutput) {
+        System.out.println("writeEPGMFromRecords: writing " + records.size() + " records to dir: " + fileOutput);
         StellarGraph graph = graphCollection.get(0);
         List<Vertex> vertexes = graph.getVertices().asList();
         List<Edge> edgesNew = new ArrayList<>();
 
         records.forEach(record -> {
+            if (record == null) System.out.println("######################## empty record");
             Map<String, Attribute> attributes = record.getAttributes();
             Attribute id = attributes.get("id");
 
@@ -188,6 +190,7 @@ public class EPGMRecordHandler implements DataSource {
                     Vertex src = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalI))).collect(Collectors.toList()).get(0);
                     if (src != null) {
                         for (int j = i + 1; j < idStackHead.size(); ++j) {
+//                            System.out.println("i: " + i + " j: " + j);
                             int finalJ = j;
                             Vertex dest = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalJ))).collect(Collectors.toList()).get(0);
                             if (dest != null) {
@@ -200,7 +203,10 @@ public class EPGMRecordHandler implements DataSource {
             }
         });
 
-        StellarGraph graphNew = graph.unionEdges(stellarFactory.createMemory(edgesNew, Edge.class));
-        graphCollection.union(graphNew).write().json(fileOutput);
+//        System.out.println("No. of new edges: " + edgesNew.size());
+        if (edgesNew.size() > 0) {
+            StellarGraph graphNew = graph.unionEdges(stellarFactory.createMemory(edgesNew, Edge.class));
+            graphCollection.union(graphNew).write().json(fileOutput);
+        }
     }
 }
