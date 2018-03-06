@@ -20,16 +20,16 @@ jobs:
       script:
         - mvn clean verify
     - stage: development
-      if: branch = travis
-      script:
-        - mvn package
-        - echo "Creating developing docker for ERBaseline version [${ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t ${DOCKER_USER}/${ER_RC_LATEST}d .
-        - docker tag ${DOCKER_USER}/${ER_RC_LATEST}d ${DOCKER_USER}/${ER_RC_VERSION}d
-        - echo "Release a developing build."
-        - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
-        - docker push ${DOCKER_USER}/${ER_RC_VERSION}d
-        - docker push ${DOCKER_USER}/${ER_LATEST}d
+        if: branch = travis
+        script:
+          - mvn package
+          - echo "Creating developing docker for ERBaseline version [${ER_VERSION}]"
+          - docker build -f docker/Dockerfile -t ${DOCKER_USER}/${ER_RC_LATEST}d .
+          - docker tag ${DOCKER_USER}/${ER_RC_LATEST}d ${DOCKER_USER}/${ER_RC_VERSION}d
+          - echo "Release a developing build."
+          - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+          - docker push ${DOCKER_USER}/${ER_RC_VERSION}d
+          - docker push ${DOCKER_USER}/${ER_LATEST}d
     - stage: staging
         if: branch = master
         script:
@@ -42,13 +42,13 @@ jobs:
           - docker push data61/${ER_RC_VERSION}
           - docker push data61/${ER_RC_LATEST}
     - stage: release
-      if: tag =~ ^release-*$"
-      script:
-        - mvn package
-        - echo "Releasing docker for ERBaseline version [${ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t data61/${ER_LATEST} .
-        - docker tag data61/${ER_LATEST} data61/${ER_VERSION}
-        - echo "create a release build."
-        - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
-        - docker push data61/${ER_LATEST}
-        - docker push data61/${ER_VERSION}
+        if: tag =~ ^release-*$"
+        script:
+          - mvn package
+          - echo "Releasing docker for ERBaseline version [${ER_VERSION}]"
+          - docker build -f docker/Dockerfile -t data61/${ER_LATEST} .
+          - docker tag data61/${ER_LATEST} data61/${ER_VERSION}
+          - echo "create a release build."
+          - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+          - docker push data61/${ER_LATEST}
+          - docker push data61/${ER_VERSION}
