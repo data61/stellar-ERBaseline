@@ -23,10 +23,12 @@ jobs:
       script:
         - mvn package
         - echo "Creating stage docker for ERBaseline version [${ER_VERSION}]"
-        - docker build -f docker/Dockerfile -t wangzhen263/${ER_RC_VERSION} .
+        - docker build -f docker/Dockerfile -t wangzhen263/${ER_LATEST} .
+        - docker tag wangzhen263/${ER_LATEST} wangzhen263/${ER_RC_VERSION}
         - echo "Release a stage build."
         - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
         - docker push wangzhen263/${ER_RC_VERSION}
+        - docker push wangzhen263/${ER_LATEST}
     - stage: release
       if: tag =~ ^release-*$"
       script:
