@@ -6,8 +6,7 @@ jdk: oraclejdk8
 env:
   global:
     - ER_VERSION: $(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.6.0:exec)
-    - ER_RC_VERSION: stellar-erbaseline:rc_${ER_VERSION}
-    - ER_RC_LATEST: stellar-erbaseline:rc_latest
+    - ER_RC_VERSION: stellar-erbaseline:${ER_VERSION}-snapshot
     - ER_LATEST: stellar-erbaseline:latest
     - ER_VERSION: stellar-erbaseline:${ER_VERSION}
 
@@ -28,7 +27,6 @@ jobs:
         - docker tag wangzhen263/${ER_RC_LATEST} wangzhen263/${ER_RC_VERSION}
         - echo "Release a stage build."
         - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
-        - docker push wangzhen263/${ER_RC_LATEST}
         - docker push wangzhen263/${ER_RC_VERSION}
     - stage: release
       if: tag =~ ^release-*$"
