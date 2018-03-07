@@ -176,13 +176,14 @@ public class ER {
 					GetRecordsFromCSV csvParser = new GetRecordsFromCSV(fileSrc);
 					records.addAll(csvParser.getAllRecords());
 					break;
-				case EPGM:
-
-					epgmParser.recordsFromEPGM(fileSrc);
-					records.addAll(epgmParser.getAllRecords());
-					break;
 				default:
-					throw new IllegalArgumentException("Invalid data format: " + format);
+					try {
+						epgmParser.recordsFromEPGM(fileSrc);
+						records.addAll(epgmParser.getAllRecords());
+						break;
+					} catch (IOException e) {
+						throw new IllegalArgumentException("Invalid data format: " + format);
+					}
 			}
 		}
 
