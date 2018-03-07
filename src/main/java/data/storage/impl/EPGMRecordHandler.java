@@ -190,9 +190,8 @@ public class EPGMRecordHandler implements DataSource {
                     Vertex src = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalI))).collect(Collectors.toList()).get(0);
                     if (src != null) {
                         for (int j = i + 1; j < idStackHead.size(); ++j) {
-//                            System.out.println("i: " + i + " j: " + j);
                             int finalJ = j;
-                            Vertex dest = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalJ))).collect(Collectors.toList()).get(0);
+                            Vertex dest = vertexes.stream().filter(v -> v.getId().toString().equals(idStackHead.get(finalJ))).collect(Collectors.toList()).get(0);
                             if (dest != null) {
                                 edgesNew.add(Edge.create(src.getId(), dest.getId(), "duplicateOf"));
                                 edgesNew.add(Edge.create(dest.getId(), src.getId(), "duplicateOf"));
@@ -203,10 +202,13 @@ public class EPGMRecordHandler implements DataSource {
             }
         });
 
-//        System.out.println("No. of new edges: " + edgesNew.size());
+       System.out.println("No. of new edges: " + edgesNew.size());
         if (edgesNew.size() > 0) {
             StellarGraph graphNew = graph.unionEdges(stellarFactory.createMemory(edgesNew, Edge.class));
-            graphCollection.union(graphNew).write().json(fileOutput);
+            // graphCollection.union(graphNew).write().json(fileOutput);
+
+            // line changed by kevin's request
+            graphNew.toCollection().write().json(fileOutput);
         }
     }
 }

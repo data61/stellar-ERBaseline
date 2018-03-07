@@ -163,7 +163,6 @@ public class ER {
 		Set<Record> records = new HashSet();
 		epgmParser = new EPGMRecordHandler(null);
 
-		System.out.println("##### parsers " + parsers.size());
 		for (Map.Entry<Path,DataFileFormat> pair : parsers.entrySet()){
 			String fileSrc = pair.getKey().toString();
 			DataFileFormat format = pair.getValue();
@@ -180,7 +179,6 @@ public class ER {
 					break;
 				default:
 					try {
-						System.out.println("asfasfsafsafsafsafas");
 						epgmParser.recordsFromEPGM(fileSrc);
 						records.addAll(epgmParser.getAllRecords());
 						break;
