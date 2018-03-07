@@ -156,12 +156,14 @@ public class ER {
 			if(filepath.toString().lastIndexOf(".") != -1 && filepath.toString().lastIndexOf(".") != 0) {
 				DataFileFormat dataFileFormat = DataFileFormat.fromString(filepath.toString().substring(filepath.toString().lastIndexOf(".") + 1));
 				parsers.put(filepath, dataFileFormat);
-			}
+			} else
+				parsers.put(filepath, DataFileFormat.fromString("EPGM"));
 		}
 
 		Set<Record> records = new HashSet();
 		epgmParser = new EPGMRecordHandler(null);
 
+		System.out.println("##### parsers " + parsers.size());
 		for (Map.Entry<Path,DataFileFormat> pair : parsers.entrySet()){
 			String fileSrc = pair.getKey().toString();
 			DataFileFormat format = pair.getValue();
@@ -178,6 +180,7 @@ public class ER {
 					break;
 				default:
 					try {
+						System.out.println("asfasfsafsafsafsafas");
 						epgmParser.recordsFromEPGM(fileSrc);
 						records.addAll(epgmParser.getAllRecords());
 						break;
