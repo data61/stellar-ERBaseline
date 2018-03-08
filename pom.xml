@@ -20,6 +20,10 @@
             <id>Serene-snapshot</id>
             <url>s3://serene-maven-repository/snapshots</url>
         </repository>
+        <repository>
+            <id>Serene-release</id>
+            <url>s3://serene-maven-repository/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -50,7 +54,7 @@
         <dependency>
             <groupId>sh.serene</groupId>
             <artifactId>stellar-utils</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.2.0</version>
         </dependency>
 
         <dependency>
