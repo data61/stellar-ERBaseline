@@ -33,7 +33,7 @@ jobs:
     - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
     - docker push data61/${ER_RC_VERSION}
   - stage: release
-    if: tag =~ ^release-.*$
+    if: tag =~ ^v.*$
     script:
     - mvn package
     - echo "Releasing docker for ERBaseline version [${ER_VERSION}]"
