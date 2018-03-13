@@ -1,6 +1,8 @@
 Stellar-ERBaseline
 ====================
 
+[![Build Status](https://travis-ci.org/data61/stellar-ERBaseline.svg?branch=master)](https://travis-ci.org/data61/stellar-ERBaseline) [![unstable](https://img.shields.io/badge/stability-unstable-yellowgreen.svg)](https://github.com/dominictarr/stability#unstable)
+
 # Introduction
 
 This repository hosts stellar-ERBaseline, a module of the [Stellar - Graph Analytics platform](https://github.com/data61/stellar) developed by [CSIRO Data61](https://data61.csiro.au). This module performs a baseline entity resolution function on graphs ingested to the Stellar platform.
