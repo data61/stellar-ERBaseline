@@ -23,23 +23,22 @@ public class CoraMatcherMerger extends BasicMatcherMerger implements
     private Map<String, String> gotAttrkeys;
     private Type type;
 
+    private Map<String, JaroTFIDFMatcher> matchers;
+
     public CoraMatcherMerger(JSONConfig props)
             throws FileNotFoundException, UnsupportedEncodingException {
 
         _factory = new SimpleRecordFactory();
         gson = new Gson();
 
-        float fnf = props.attributes.get("full_name").floatValue();
-        float addf = props.attributes.get("address").floatValue();
-
-        System.out.println("Similarity Threshold - Name: " + fnf + " Address: " + addf);
+        matchers = new HashMap<>();
+        props.attributes.forEach( (k, v) -> {
+            matchers.put(k, new JaroTFIDFMatcher(v.floatValue()));
+            System.out.println("Similarity Threshold - " + k + ":" + v);
+        });
 
         keyAttributes = new ArrayList<>(props.attributes.keySet());
         format = DataFileFormat.fromString(props.dataFormat);
-
-        nameMatcher = new JaroTFIDFMatcher(fnf);
-        addrMatcher = new JaroTFIDFMatcher(addf);
-
         type = new TypeToken<Map<String, String>>(){}.getType();
     }
 
@@ -50,36 +49,22 @@ public class CoraMatcherMerger extends BasicMatcherMerger implements
 
     protected boolean matchInternal(Record r1, Record r2) {
         Set<String> attrkeys = r1.getAttributes().keySet();
-        Map<String, String> gotAttrkeys = new HashMap<>();
+        List<String> gotAttrkeys = new ArrayList<>();
 
         keyAttributes.forEach(ka->{
-            Optional<String> ret = attrkeys.stream().parallel().filter(attrkey->attrkey.toLowerCase().contains(ka.toLowerCase())).findAny();
+            Optional<String> ret = attrkeys.stream().parallel().filter(attrkey->attrkey.contains(ka)).findAny();
             if (ret.isPresent()) {
-                gotAttrkeys.put(ka.toLowerCase(), ret.get());
+                gotAttrkeys.add(ka);
             }
         });
 
-        for (Map.Entry<String, String> entry  : gotAttrkeys.entrySet()) {
-            String attrKey = entry.getValue();
-            String propKey = entry.getKey();
-            Attribute a1 = r1.getAttribute(attrKey);
-            Attribute a2 = r2.getAttribute(attrKey);
+        for (String key : gotAttrkeys) {
+            Attribute a1 = r1.getAttribute(key);
+            Attribute a2 = r2.getAttribute(key);
 
-            switch (propKey) {
-                case "full_name":
-                    if (a1 != null && a2 != null) {
-                        if (!ExistentialBooleanComparator.attributesMatch(a1, a2, nameMatcher))
-                            return false;
-                    }
-                    break;
-                case "address":
-                    if (a1 != null && a2 != null) {
-                        if (!ExistentialBooleanComparator.attributesMatch(a1, a2, addrMatcher))
-                            return false;
-                    }
-                    break;
-                default:
-                    break;
+            if (a1 != null && a2 != null) {
+                if (!ExistentialBooleanComparator.attributesMatch(a1, a2, matchers.get(key)))
+                    return false;
             }
         }
 
