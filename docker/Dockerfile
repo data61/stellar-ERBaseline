@@ -6,7 +6,7 @@ WORKDIR /data
 RUN mkdir -p /opt/ER/Baseline/
 COPY target/Baseline-1.3.7-jar-with-dependencies.jar /opt/ER/Baseline/
 ADD datasets/ACM_DBLP /opt/ER/Baseline/datasets/ACM_DBLP
-ADD datasets/Cora_Terror /opt/ER/Baseline/datasets/Cora_Terror
+ADD datasets/Risk_Net /opt/ER/Baseline/datasets/Risk_Net
 ADD datasets/Spammer_ER /opt/ER/Baseline/datasets/Spammer_ER
 
 EXPOSE 7000

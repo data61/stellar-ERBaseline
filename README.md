@@ -96,7 +96,7 @@ version: GET /version
 ````
 deduplicate: POST /deduplicate/:json_param
 ````
-3. Example of json parameters for `deduplicate` in dataset/Cora_Terror/param.json
+3. Example of json parameters for `deduplicate` in dataset/Risk_Net/param.json
 
 ## System Requirements
 1. Oracle JDK 8
