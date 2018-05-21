@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 import com.univocity.parsers.csv.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class GetRecordsFromCSV implements DataSource {
     private Set<Record> records;
@@ -44,11 +45,12 @@ public class GetRecordsFromCSV implements DataSource {
         return null;
     }
 
-    public GetRecordsFromCSV(String file)
+    public GetRecordsFromCSV(String file, Set<String> keys)
             throws UnsupportedEncodingException, FileNotFoundException {
         records = new HashSet<>();
 
         CsvParserSettings settings = new CsvParserSettings();
+        settings.setMaxColumns(2048);
         CsvParser parser = new CsvParser(settings);
         InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
 
@@ -58,23 +60,30 @@ public class GetRecordsFromCSV implements DataSource {
         for(String[] model : allRows) {
             Set<Attribute> attrSet = new HashSet<>();
             int size = model.length;
+
             for (int i=0; i < size; i++) {
-                Attribute attr = new Attribute(attributes[i]);
-
-                if (attributes[i].equals("authors")) {
+                if (keys.contains(attributes[i])) {
+                    Attribute attr = new Attribute(attributes[i]);
                     if (model[i] == null) continue;
-                    List authors = Arrays.asList(model[i].split(","));
-                    List updated = (List) authors.stream().map(s->getLastName(s)).collect(Collectors.toList());
 
-                    if (updated.size() > 0) {
-                        Collections.sort(updated);
-                        attr.addValue(String.join(",", updated));
-                        attrSet.add(attr);
-                    } else {
-                        System.out.println("Null authors attributes!");
-                        attr = null;
-                    }
-                } else {
+                    String str = model[i];
+                    str = str.replaceAll("\n", " ")
+                            .replaceAll("-", "")
+                            .replaceAll("/", "")
+                            .replaceAll("'", "")
+                            .replaceAll(",", "")
+                            .replaceAll(":", " ")
+                            .replaceAll(" +", " ")
+                            .replaceAll("^\"+", "")
+                            .replaceAll("\"+$", "")
+                            .toLowerCase();
+
+                    attr.addValue(str);
+                    attrSet.add(attr);
+                }
+
+                if (attributes[i].contains("id")) {
+                    Attribute attr = new Attribute("__id");
                     attr.addValue(model[i]);
                     attrSet.add(attr);
                 }

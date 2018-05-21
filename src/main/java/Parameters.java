@@ -7,7 +7,7 @@ public class Parameters {
     @Parameter(names = {"--rest", "-r"}, description = "To start rest server mode")
     public boolean rest = false;
 
-    @Parameter(names = {"--cli", "-c"}, description = "To run in cmd mode, use -c [dataset]")
+    @Parameter(names = {"--cli", "-c"}, description = "To run in cmd mode, use -c dataset/conf")
     public String cli;
 
     @Parameter(names = {"--help", "-h"}, help = true)

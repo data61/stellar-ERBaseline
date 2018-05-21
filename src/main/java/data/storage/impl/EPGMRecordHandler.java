@@ -174,7 +174,6 @@ public class EPGMRecordHandler implements DataSource {
         records.forEach(record -> {
             if (record == null) System.out.println("######################## empty record");
             Map<String, Attribute> attributes = record.getAttributes();
-
             Attribute id = attributes.get("id");
 
             if (id.getValuesCount() > 1) {
@@ -184,31 +183,19 @@ public class EPGMRecordHandler implements DataSource {
                 while (iterId.hasNext())
                     idStack.add((String)iterId.next());
 
-                //FixMe: if the number of the matched IDs is too big, the double 'for loop' will take long time to generate edges.
-                if (idStack.size() > 100) {
-                    System.out.println("Deduplicated matcher threshold is too low. Please increase that threshold!");
-                    return;
-                }
-
                 List<String> idStackHead = new ArrayList<>(idStack);
 
                 for (int i = 0; i<idStack.size(); ++i) {
-//                    int finalI = i;
-//                    Vertex vsrc = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalI))).collect(Collectors.toList()).get(0);
-                    ElementId src = ElementId.fromString(idStack.get(i));
+                    int finalI = i;
+                    Vertex src = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalI))).collect(Collectors.toList()).get(0);
                     if (src != null) {
                         for (int j = i + 1; j < idStackHead.size(); ++j) {
-//                            int finalJ = j;
-//                            Vertex vdest = vertexes.stream().filter(v -> v.getId().toString().equals(idStackHead.get(finalJ))).collect(Collectors.toList()).get(0);
-//                            if (dest != null) {
-//                                edgesNew.add(Edge.create(src.getId(), dest.getId(), "duplicateOf"));
-//                                edgesNew.add(Edge.create(dest.getId(), src.getId(), "duplicateOf"));
-//                            }
-
-                            ElementId dest = ElementId.fromString(idStackHead.get(j));
+//                            System.out.println("i: " + i + " j: " + j);
+                            int finalJ = j;
+                            Vertex dest = vertexes.stream().filter(v -> v.getId().toString().equals(idStack.get(finalJ))).collect(Collectors.toList()).get(0);
                             if (dest != null) {
-                                edgesNew.add(Edge.create(src, dest, "duplicateOf"));
-                                edgesNew.add(Edge.create(dest, src, "duplicateOf"));
+                                edgesNew.add(Edge.create(src.getId(), dest.getId(), "duplicateOf"));
+                                edgesNew.add(Edge.create(dest.getId(), src.getId(), "duplicateOf"));
                             }
                         }
                     }
@@ -216,14 +203,10 @@ public class EPGMRecordHandler implements DataSource {
             }
         });
 
+//        System.out.println("No. of new edges: " + edgesNew.size());
         if (edgesNew.size() > 0) {
-            System.out.println("No. of new edges: " + edgesNew.size());
             StellarGraph graphNew = graph.unionEdges(stellarFactory.createMemory(edgesNew, Edge.class));
-            // graphCollection.union(graphNew).write().json(fileOutput);
-
-            // line changed by kevin's request
-            graphNew.toCollection().write().json(fileOutput);
-        } else
-            System.out.println("No new edges generated, original graph has no change.");
+            graphCollection.union(graphNew).write().json(fileOutput);
+        }
     }
 }

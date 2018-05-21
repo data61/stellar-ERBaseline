@@ -6,7 +6,7 @@
 
     <groupId>Serene.EntityResolution</groupId>
     <artifactId>Baseline</artifactId>
-    <version>1.3.8</version>
+    <version>1.3.4</version>
     <name>Stellar ER Baseline</name>
 
     <properties>
@@ -19,10 +19,6 @@
         <repository>
             <id>Serene-snapshot</id>
             <url>s3://serene-maven-repository/snapshots</url>
-        </repository>
-        <repository>
-            <id>Serene-release</id>
-            <url>s3://serene-maven-repository/releases</url>
         </repository>
     </repositories>
 
@@ -54,7 +50,7 @@
         <dependency>
             <groupId>sh.serene</groupId>
             <artifactId>stellar-utils</artifactId>
-            <version>0.2.1</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

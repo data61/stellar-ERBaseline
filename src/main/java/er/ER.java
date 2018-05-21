@@ -97,8 +97,8 @@ public class ER {
 	}
 
 	public Set<Record> parseConfigFile(String configFile) throws Exception {
+		System.out.println(configFile);
 		properties = JSONConfig.createConfig(new FileReader(configFile));
-		System.out.println("#####: " + properties.toString());
 
 		if (!properties.isValid()){
 			throw (new Exception("Invalid JSON config!"));
@@ -156,8 +156,7 @@ public class ER {
 			if(filepath.toString().lastIndexOf(".") != -1 && filepath.toString().lastIndexOf(".") != 0) {
 				DataFileFormat dataFileFormat = DataFileFormat.fromString(filepath.toString().substring(filepath.toString().lastIndexOf(".") + 1));
 				parsers.put(filepath, dataFileFormat);
-			} else
-				parsers.put(filepath, DataFileFormat.fromString("EPGM"));
+			}
 		}
 
 		Set<Record> records = new HashSet();
@@ -174,21 +173,20 @@ public class ER {
 					records.addAll(yds.getAllRecords());
 					break;
 				case CSV:
-					GetRecordsFromCSV csvParser = new GetRecordsFromCSV(fileSrc);
+					GetRecordsFromCSV csvParser = new GetRecordsFromCSV(fileSrc, parameters.attributes.keySet());
 					records.addAll(csvParser.getAllRecords());
 					break;
+				case EPGM:
+
+					epgmParser.recordsFromEPGM(fileSrc);
+					records.addAll(epgmParser.getAllRecords());
+					break;
 				default:
-					try {
-						epgmParser.recordsFromEPGM(fileSrc);
-						records.addAll(epgmParser.getAllRecords());
-						break;
-					} catch (IOException e) {
-						throw new IllegalArgumentException("Invalid data format: " + format);
-					}
+					throw new IllegalArgumentException("Invalid data format: " + format);
 			}
 		}
 
-//		System.out.println("Got records: " + records.size());
+		System.out.println("Got records: " + records.size());
 		return records;
 	}
 
